@@ -11,7 +11,7 @@
 /* FORM AREA */
 .business-form-container {
   position: absolute;
-
+  width: 50%;
   height: 100%;
   left: 0;
   display: flex;
@@ -81,7 +81,6 @@
   border-color: #1dbf73;
 }
 
-/* VISIBILITY */
 .business-sign-in {
   opacity: 1;
   z-index: 2;
