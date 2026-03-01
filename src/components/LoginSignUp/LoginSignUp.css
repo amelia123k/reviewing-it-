@@ -1,212 +1,184 @@
-/* RESET */
+:root {
+  --primary: #1dbf73;
+  --primary-dark: #16a863;
+  --soft-bg: #f2faf6;
+  --card-bg: #ffffff;
+  --text-dark: #1f2937;
+  --text-light: #6b7280;
+}
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Montserrat", sans-serif;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
-body {
-    background: linear-gradient(to right, #e2f7ee, #c8f0df);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
+.auth-viewport {
+  min-height: 100vh;
+  background: var(--soft-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
 }
 
-.container {
-    background: #fff;
-    border-radius: 30px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.35);
-    position: relative;
-    overflow: hidden;
-    width: 768px;
-    max-width: 100%;
-    min-height: 480px;
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card-bg);
+  border-radius: 36px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
-.container h1 {
-    font-weight: 700;
-    margin-bottom: 10px;
+/* Wave Header */
+.wave-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px; /* taller so wave is lower */
 }
 
-.container p {
-    font-size: 14px;
-    line-height: 20px;
-    margin: 15px 0;
+.wave-svg {
+  position: absolute;
+  top: 0px; /* drop the wave down */
+  left: 0;
+  width: 100%;
+  height: 300px;
+  z-index: 1;
 }
 
-.container span {
-    font-size: 12px;
-    margin: 10px 0;
+.header-text {
+  position: absolute;
+  top: 28px; /* header text above the wave */
+  left: 20px;
+  right: 12;
+  text-align: center;
+  color: white;
+  z-index: 2;
 }
 
-.container a {
-    font-size: 13px;
-    color: #333;
-    text-decoration: none;
-    margin: 10px 0;
+.header-text h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: white;
 }
 
-.container button {
-    background-color: #1dbf73;
-    color: #fff;
-    font-size: 12px;
-    padding: 12px 45px;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    margin-top: 15px;
-    cursor: pointer;
-    transition: 0.3s;
+.header-text p {
+  font-size: 14px;
+  margin-top: 5px;
+  opacity: 0.9;
 }
 
-.container button:hover {
-    background-color: #16a863;
+/* BODY */
+.auth-body {
+  padding: 30px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-.container button.hidden {
-    background: transparent;
-    border: 1px solid #fff;
+.auth-body input {
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: #f3f4f6;
+  font-size: 14px;
+  outline: none;
 }
 
-.container form {
-    background: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0 40px;
-    height: 100%;
+.auth-body input:focus {
+  border: 1px solid var(--primary);
+  background: #fff;
 }
 
-.container input {
-    width: 100%;
-    background: #eee;
-    border: none;
-    margin: 8px 0;
-    padding: 12px 15px;
-    border-radius: 8px;
-    font-size: 13px;
-    outline: none;
+.primary-btn {
+  background: var(--primary);
+  color: white;
+  padding: 15px;
+  border-radius: 16px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-.form-container {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 50%;
-    transition: all 0.6s ease-in-out;
+.primary-btn:hover {
+  background: var(--primary-dark);
 }
 
-
-.sign-in {
-    left: 0;
-    z-index: 2;
-}
-
-.container.active .sign-in {
-    transform: translateX(100%);
-}
-
-.sign-up {
-    left: 0;
-    opacity: 0;
-    z-index: 1;
-}
-
-.container.active .sign-up {
-    transform: translateX(100%);
-    opacity: 1;
-    z-index: 5;
+.forgot-password {
+  text-align: right;
+  font-size: 13px;
+  color: var(--primary);
+  cursor: pointer;
+  margin-bottom: 10px;
 }
 
 .social-icons {
-    display: flex;
-    gap: 12px;
-    margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin: 20px 0;
 }
 
-.social-icons a {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    border: 1px solid #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #333;
-    font-size: 18px;
-    transition: 0.3s;
+.social-icons i {
+  width: 42px;
+  height: 42px;
+  background: #f3f4f6;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-.social-icons a:hover {
-    background: #1dbf73;
-    color: #fff;
-    border-color: #1dbf73;
+.social-icons i:hover {
+  background: var(--primary);
+  color: white;
 }
 
-.toggle-container {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-    transition: all 0.6s ease-in-out;
-    border-radius: 150px 0 0 100px;
-    z-index: 1000;
+.switch-text {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-light);
 }
 
-.container.active .toggle-container {
-    transform: translateX(-100%);
-    border-radius: 0 150px 100px 0;
+.switch-text span {
+  color: var(--primary);
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 5px;
 }
 
-.toggle {
-    background: linear-gradient(to right, #34d399, #1dbf73);
-    color: #fff;
-    position: relative;
-    left: -100%;
-    height: 100%;
-    width: 200%;
-    transform: translateX(0);
-    transition: all 0.6s ease-in-out;
+.nav {
+  text-align: center;
+  font-size: 14px;
+  color: var(--primary);
+  cursor: pointer;
+  display: block;
+  margin-top: 10px;
+  text-decoration: underline;
 }
 
-.container.active .toggle {
-    transform: translateX(50%);
-}
+/* Responsive */
+@media (max-width: 480px) {
+  .auth-card {
+    border-radius: 28px;
+  }
 
-.toggle-panel {
-    position: absolute;
-    width: 50%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0 30px;
-    text-align: center;
-}
+  .auth-body {
+    padding: 20px;
+  }
 
-/* LEFT PANEL */
-.toggle-left {
-    transform: translateX(-200%);
-}
+  .header-text h1 {
+    font-size: 20px;
+  }
 
-.container.active .toggle-left {
-    transform: translateX(0);
-}
-
-/* RIGHT PANEL */
-.toggle-right {
-    right: 0;
-    transform: translateX(0);
-}
-
-.container.active .toggle-right {
-    transform: translateX(200%);
+  .header-text p {
+    font-size: 13px;
+  }
 }

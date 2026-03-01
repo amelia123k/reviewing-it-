@@ -1,93 +1,83 @@
 import React, { useState } from "react";
-import "./LoginSignUp.css";
 import { useNavigate } from "react-router-dom";
+import "./LoginSignUp.css";
 
 const LoginSignUp = () => {
-  const [active, setActive] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
-  const navigateToBusiness = () => {
-    navigate("/business");
-  };
+
   return (
-    <div className={`container ${active ? "active" : ""}`}>
-      <div className="form-container sign-up">
-        <form>
-          <h1>Create Account</h1>
-
-          <div className="social-icons">
-            <a href="#">
-              <i className="fa-brands fa-google"></i>
-            </a>
-            <a href="#">
-              <i className="fa-brands fa-apple"></i>
-            </a>
-            <a href="#">
-              <i className="fa-solid fa-envelope"></i>
-            </a>
-            <a href="#">
-              <i className="fa-brands fa-facebook-f"></i>
-            </a>
+    <div className="auth-viewport">
+      <div className="auth-card">
+        {/* Wave Header */}
+        <div className="wave-wrapper">
+          <div className="header-text">
+            <h1>{isLogin ? "Welcome Back!" : "Hello Friend!"}</h1>
+            <p>
+              {isLogin
+                ? "Sign in to continue reviewing vendors"
+                : "Create your account to get started"}
+            </p>
           </div>
 
-          <input type="text" placeholder="Name" />
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
-          <input type=" Comfirm password" placeholder="Confirm Password" />
-          <button>Sign Up</button>
-        </form>
-      </div>
-
-      <div className="form-container sign-in">
-        <form>
-          <h1>Sign In</h1>
-
-          <div className="social-icons">
-            <a href="#">
-              <i className="fa-brands fa-google"></i>
-            </a>
-            <a href="#">
-              <i className="fa-brands fa-apple"></i>
-            </a>
-            <a href="#">
-              <i className="fa-solid fa-envelope"></i>
-            </a>
-            <a href="#">
-              <i className="fa-brands fa-facebook-f"></i>
-            </a>
-          </div>
-
-          <span>or use your email password</span>
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
-          <a href="#">Forgot password?</a>
-          <button>Sign In</button>
-          <button
-            type="button"
-            onClick={navigateToBusiness}
-            className="nav-btn"
+          <svg
+            className="wave-svg"
+            viewBox="0 0 1200 120"
+            preserveAspectRatio="none"
           >
-            Login as Business owner
+            <path
+              d="M0,0 C150,100 350,100 600,50 C850,0 1050,0 1200,50 L1200,0 L0,0 Z"
+              fill="url(#waveGradient)"
+            />
+            <defs>
+              <linearGradient
+                id="waveGradient"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="0%"
+              >
+                <stop offset="0%" stopColor="#1dbf73" />
+                <stop offset="50%" stopColor="#16a863" />
+                <stop offset="100%" stopColor="#1dbf73" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        {/* Body */}
+        <div className="auth-body">
+          {!isLogin && <input type="text" placeholder="Full Name" />}
+          <input type="email" placeholder="Email Address" />
+          <input type="password" placeholder="Password" />
+          {!isLogin && <input type="password" placeholder="Confirm Password" />}
+
+          <button 
+            className="primary-btn"
+            onClick={() => navigate("/dashboard")}
+          >
+            {isLogin ? "Sign In" : "Sign Up"}
           </button>
-        </form>
-      </div>
 
-      <div className="toggle-container">
-        <div className="toggle">
-          <div className="toggle-panel toggle-left">
-            <h1>Welcome Back!</h1>
-            <p>To keep connected, please login</p>
-            <button className="hidden" onClick={() => setActive(false)}>
-              Sign In
-            </button>
+          <p className="forgot-password">Forgot Password?</p>
+
+          <div className="social-icons">
+            <i className="fa-brands fa-google"></i>
+            <i className="fa-brands fa-apple"></i>
+            <i className="fa-solid fa-envelope"></i>
+            <i className="fa-brands fa-facebook-f"></i>
           </div>
 
-          <div className="toggle-panel toggle-right">
-            <h1>Hello, Friend!</h1>
-            <p>Enter your details to review your products and vendors</p>
-            <button className="hidden" onClick={() => setActive(true)}>
-              Sign Up
-            </button>
-          </div>
+          <p className="switch-text">
+            {isLogin ? "New here?" : "Already have an account?"}
+            <span onClick={() => setIsLogin(!isLogin)}>
+              {isLogin ? " Sign Up" : " Sign In"}
+            </span>
+          </p>
+
+          <p className="nav" onClick={() => navigate("/business")}>
+            Register as Business
+          </p>
         </div>
       </div>
     </div>

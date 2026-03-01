@@ -1,0 +1,83 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap");
+
+.cta {
+  padding: 90px 48px;
+  background: linear-gradient(160deg, #eef7ef 0%, #d8efd9 100%);
+  text-align: center;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.ctaIn {
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+.ctaIn h2 {
+  font-family: "Fraunces", serif;
+  font-size: clamp(34px, 4vw, 56px);
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  line-height: 1.05;
+  margin-bottom: 16px;
+  color: #1a2e1c;
+}
+.ctaIn h2 em {
+  font-style: italic;
+  font-weight: 400;
+  color: #3a7d44;
+}
+
+.ctaIn p {
+  font-size: 16px;
+  color: #6a856d;
+  line-height: 1.7;
+  margin-bottom: 36px;
+}
+
+.ctaBtns {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btnMain {
+  padding: 14px 28px;
+  background: #3a7d44;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(58, 125, 68, 0.3);
+  transition: all 0.2s;
+}
+.btnMain:hover {
+  background: #5a9e64;
+  transform: translateY(-2px);
+}
+
+.btnSec {
+  padding: 14px 24px;
+  background: #fff;
+  color:#3a7d44;;
+  border: 1.5px solid rgba(58, 125, 68, 0.2);
+  border-radius: 12px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btnSec:hover {
+  border-color: #3a7d44;
+  color: #3a7d44;
+}
+
+@media (max-width: 860px) {
+  .cta {
+    padding: 60px 24px;
+  }
+}

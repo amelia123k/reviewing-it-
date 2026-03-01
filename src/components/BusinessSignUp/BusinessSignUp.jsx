@@ -11,90 +11,73 @@ const BusinessSignUp = () => {
   };
 
   return (
-    <div className={`business-container ${active ? "business-active" : ""}`}>
-      <div className="business-form-container business-sign-in">
-        <form>
-          <h1>Sign In</h1>
+    <div className="business-container">
+      {/* SIGN IN */}
+      {!active && (
+        <div className="business-form-container">
+          <form>
+            <h1>Welcome!</h1>
 
-          <div className="business-social-icons">
-            <a href="#">
+            <div className="business-social-icons">
               <i className="fa-brands fa-google"></i>
-            </a>
-            <a href="#">
               <i className="fa-brands fa-apple"></i>
-            </a>
-            <a href="#">
               <i className="fa-solid fa-envelope"></i>
-            </a>
-            <a href="#">
               <i className="fa-brands fa-facebook-f"></i>
-            </a>
-          </div>
+            </div>
 
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
+            <input type="email" placeholder="Email" />
+            <input type="password" placeholder="Password" />
 
-          <button type="button">Sign In</button>
+            <a href="#" className="forgot">Forgot password?</a>
 
-          <button
-            type="button"
-            onClick={navigateToUser}
-            className="business-nav-btn"
-          >
-            Login as Customer
-          </button>
-        </form>
-      </div>
+            <button type="button" className="primary-btn">
+              Sign In
+            </button>
 
-      <div className="business-form-container business-sign-up">
-        <form>
-          <h1>Create Account</h1>
+            <p className="switch-text">
+              Don’t have a business account?
+              <span onClick={() => setActive(true)}> Sign Up</span>
+            </p>
 
-          <div className="business-social-icons">
-            <a href="#">
-              <i className="fa-brands fa-google"></i>
-            </a>
-            <a href="#">
-              <i className="fa-brands fa-apple"></i>
-            </a>
-            <a href="#">
-              <i className="fa-solid fa-envelope"></i>
-            </a>
-            <a href="#">
-              <i className="fa-brands fa-facebook-f"></i>
-            </a>
-          </div>
-
-          <input type="text" placeholder="Name" />
-          <input type="number" placeholder="Business WhatsApp Number" />
-          <input type="email" placeholder="Email" />
-          <input type="text" placeholder="Location e.g Buea, Molyko" />
-          <input type="text" placeholder="Business Category" />
-          <input type="password" placeholder="Password" />
-          <input type="password" placeholder="Confirm Password" />
-          <button type="button">Sign Up</button>
-        </form>
-      </div>
-
-      <div className="business-toggle-container">
-        <div className="business-toggle">
-          <div className="business-toggle-panel">
-            {active ? (
-              <>
-                <h1>Hello, Business Owner!</h1>
-                <p>Enter your details and start your journey</p>
-                <button onClick={() => setActive(false)}>Sign In</button>
-              </>
-            ) : (
-              <>
-                <h1>Welcome Back!</h1>
-                <p>To keep connected, please sign in</p>
-                <button onClick={() => setActive(true)}>Sign Up</button>
-              </>
-            )}
-          </div>
+            <p className="nav" onClick={navigateToUser}>
+              Login as Customer
+            </p>
+          </form>
         </div>
-      </div>
+      )}
+
+      {/* SIGN UP */}
+      {active && (
+        <div className="business-form-container">
+          <form>
+            <h1>Create Business Account</h1>
+
+            <div className="business-social-icons">
+              <i className="fa-brands fa-google"></i>
+              <i className="fa-brands fa-apple"></i>
+              <i className="fa-solid fa-envelope"></i>
+              <i className="fa-brands fa-facebook-f"></i>
+            </div>
+
+            <input type="text" placeholder="Business Name" />
+            <input type="number" placeholder="WhatsApp Number" />
+            <input type="email" placeholder="Email" />
+            <input type="text" placeholder="Location (Buea, Molyko)" />
+            <input type="text" placeholder="Business Category" />
+            <input type="password" placeholder="Password" />
+            <input type="password" placeholder="Confirm Password" />
+
+            <button type="button" className="primary-btn">
+              Sign Up
+            </button>
+
+            <p className="switch-text">
+              Already have an account?
+              <span onClick={() => setActive(false)}> Sign In</span>
+            </p>
+          </form>
+        </div>
+      )}
     </div>
   );
 };

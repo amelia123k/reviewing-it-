@@ -1,0 +1,103 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap");
+
+.hiw {
+  padding: 90px 48px;
+  background: #fdf8f0;
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.hiwIn {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.sectionLabel {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #3a7d44;
+  margin-bottom: 12px;
+}
+
+.sectionH2 {
+  font-family: "Fraunces", serif;
+  font-size: clamp(30px, 3.5vw, 48px);
+  font-weight: 900;
+  letter-spacing: -1px;
+  line-height: 1.1;
+  margin-bottom: 12px;
+  color: #1a2e1c;
+}
+.sectionH2 em {
+  font-style: italic;
+  font-weight: 400;
+  color: #6a856d;
+}
+
+.sectionSub {
+  font-size: 15px;
+  color: #6a856d;
+  line-height: 1.7;
+  max-width: 420px;
+  margin-bottom: 52px;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.step {
+  background: #fff;
+  border-radius: 20px;
+  padding: 32px 28px;
+  border: 1px solid rgba(58, 125, 68, 0.08);
+  transition: all 0.25s;
+}
+.step:hover {
+  border-color: rgba(58, 125, 68, 0.25);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(58, 125, 68, 0.1);
+}
+
+.stepNum {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: #e8f5ea;
+  color: #3a7d44;
+  font-weight: 700;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.stepIcon {
+  font-size: 28px;
+  margin-bottom: 14px;
+}
+.stepTitle {
+  font-family: "Fraunces", serif;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #1a2e1c;
+}
+.stepDesc {
+  font-size: 14px;
+  color: #6a856d;
+  line-height: 1.65;
+}
+
+@media (max-width: 860px) {
+  .hiw {
+    padding: 60px 24px;
+  }
+  .steps {
+    grid-template-columns: 1fr;
+  }
+}

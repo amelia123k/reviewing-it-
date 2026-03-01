@@ -1,0 +1,47 @@
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 32px;
+}
+.statCard {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid #edf2f7;
+}
+.statIcon {
+  width: 56px;
+  height: 56px;
+  background: #f0fdf4;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #10b981;
+}
+.statValue {
+  display: block;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.2;
+}
+.statLabel {
+  display: block;
+  font-size: 13px;
+  color: #64748b;
+}
+@media screen and (max-width: 1200px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media screen and (max-width: 768px) {
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+}

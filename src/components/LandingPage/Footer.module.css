@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap");
+
+.footer {
+  padding: 32px 48px;
+  background: #1a4321;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-family: "Plus Jakarta Sans", sans-serif;
+}
+
+.fLogo {
+  font-family: "Fraunces", serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+}
+.fLogo span {
+  color: #6dbf78;
+}
+
+.fText {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.fMentor {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.3);
+}
+.fMentor span {
+  color: #c8861a;
+}
+
+@media (max-width: 860px) {
+  .footer {
+    padding: 28px 24px;
+    flex-direction: column;
+    text-align: center;
+  }
+}

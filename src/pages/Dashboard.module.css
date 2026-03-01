@@ -1,0 +1,51 @@
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.mainContent {
+  flex: 1;
+  padding: 24px 32px 80px 32px;
+  overflow-x: hidden;
+}
+
+.twoColumnLayout {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.leftColumn,
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media screen and (max-width: 1200px) {
+  .twoColumnLayout {
+    grid-template-columns: 1fr;
+  }
+}
+@media screen and (max-width: 992px) {
+  .mainContent {
+    padding-bottom: 80px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .mainContent {
+    padding: 16px 16px 80px 16px;
+  }
+}
