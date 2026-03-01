@@ -4,7 +4,20 @@ import "./LoginSignUp.css";
 
 const LoginSignUp = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
+
+  const handleSubmit = () => {
+    if (isLogin) {
+      console.log("logging in", { email, password });
+    } else {
+      console.log("signing up", { name, email, password, confirmPassword });
+    }
+    navigate("/dashboard");
+  };
 
   return (
     <div className="auth-viewport">
@@ -47,14 +60,38 @@ const LoginSignUp = () => {
 
         {/* Body */}
         <div className="auth-body">
-          {!isLogin && <input type="text" placeholder="Full Name" />}
-          <input type="email" placeholder="Email Address" />
-          <input type="password" placeholder="Password" />
-          {!isLogin && <input type="password" placeholder="Confirm Password" />}
+          {!isLogin && (
+            <input
+              type="text"
+              placeholder="Full Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          )}
+          <input
+            type="email"
+            placeholder="Email Address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {!isLogin && (
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          )}
 
           <button 
             className="primary-btn"
-            onClick={() => navigate("/dashboard")}
+            onClick={handleSubmit}
           >
             {isLogin ? "Sign In" : "Sign Up"}
           </button>
