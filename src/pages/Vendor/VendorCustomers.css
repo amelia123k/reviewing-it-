@@ -1,0 +1,116 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --sage: #2d6a35;
+  --sage-l: #3a7d44;
+  --sage-bg: #f2faf4;
+  --warm: #f7fbf7;
+  --dark: #0d1f12;
+  --body: #3a4a3d;
+  --muted: #7a9a7d;
+  --border: #dce9dc;
+  --white: #ffffff;
+  --red: #e05252;
+}
+
+.vc-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+}
+.vc-cardhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+.vc-ctitle {
+  font-family: "Lora", serif;
+  font-size: 15px;
+  font-weight: 700;
+}
+.vc-csub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.vc-tag {
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--sage-bg);
+  color: var(--sage);
+  padding: 4px 11px;
+  border-radius: 8px;
+}
+
+.vc-row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 13px 15px;
+  margin-top: 8px;
+  transition: all 0.2s;
+}
+.vc-row:hover {
+  border-color: var(--sage);
+}
+.vc-av {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  color: #fff;
+  flex-shrink: 0;
+}
+.vc-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+.vc-time {
+  font-size: 11px;
+  color: var(--muted);
+}
+.vc-badge {
+  font-size: 11px;
+  color: var(--muted);
+  background: var(--sage-bg);
+  padding: 3px 9px;
+  border-radius: 20px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.vc-msgbtn {
+  margin-left: 8px;
+  padding: 5px 12px;
+  background: var(--sage);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+}
+.vc-msgbtn:hover {
+  background: var(--sage-l);
+}
+
+@media (max-width: 640px) {
+  .vc-row {
+    flex-wrap: wrap;
+  }
+  .vc-badge {
+    margin-left: 0;
+  }
+  .vc-msgbtn {
+    margin-left: 0;
+  }
+}

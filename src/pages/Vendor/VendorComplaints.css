@@ -1,0 +1,130 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --sage: #2d6a35;
+  --sage-l: #3a7d44;
+  --sage-bg: #f2faf4;
+  --warm: #f7fbf7;
+  --dark: #0d1f12;
+  --body: #3a4a3d;
+  --muted: #7a9a7d;
+  --border: #dce9dc;
+  --white: #ffffff;
+  --red: #e05252;
+}
+
+.cp-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+.cp-ctitle {
+  font-family: "Lora", serif;
+  font-size: 15px;
+  font-weight: 700;
+}
+.cp-csub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.cp-tagred {
+  font-size: 11px;
+  font-weight: 600;
+  background: #fff0f0;
+  color: var(--red);
+  padding: 4px 11px;
+  border-radius: 8px;
+}
+
+.cp-item {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+.cp-item.open {
+  border-left: 4px solid var(--red);
+}
+.cp-item.resolved {
+  border-left: 4px solid var(--sage);
+  opacity: 0.8;
+}
+
+.cp-top {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 8px;
+}
+.cp-badge {
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+}
+.cp-badge.open {
+  background: #fff0f0;
+  color: var(--red);
+}
+.cp-badge.done {
+  background: var(--sage-bg);
+  color: var(--sage);
+}
+.cp-av {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 10px;
+  color: #fff;
+  flex-shrink: 0;
+}
+.cp-name {
+  font-size: 13px;
+  font-weight: 600;
+}
+.cp-txt {
+  font-size: 13px;
+  color: var(--body);
+  line-height: 1.6;
+  margin-bottom: 9px;
+}
+.cp-done {
+  font-size: 12px;
+  color: var(--sage);
+}
+
+.cp-resolvebn {
+  padding: 6px 13px;
+  background: var(--sage);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.cp-dismissbn {
+  padding: 6px 13px;
+  background: #fff0f0;
+  color: var(--red);
+  border: none;
+  border-radius: 7px;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .cp-top {
+    flex-wrap: wrap;
+  }
+}

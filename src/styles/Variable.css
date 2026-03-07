@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --sage:    #2D6A35;
+  --sage-l:  #3A7D44;
+  --sage-bg: #F2FAF4;
+  --warm:    #F7FBF7;
+  --dark:    #0D1F12;
+  --body:    #3A4A3D;
+  --muted:   #7A9A7D;
+  --border:  #DCE9DC;
+  --white:   #FFFFFF;
+  --red:     #E05252;
+}

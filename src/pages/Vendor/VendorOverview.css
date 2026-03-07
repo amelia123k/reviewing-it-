@@ -1,0 +1,225 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --sage: #2d6a35;
+  --sage-l: #3a7d44;
+  --sage-bg: #f2faf4;
+  --warm: #f7fbf7;
+  --dark: #0d1f12;
+  --body: #3a4a3d;
+  --muted: #7a9a7d;
+  --border: #dce9dc;
+  --white: #ffffff;
+  --red: #e05252;
+}
+
+.ov-two {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 16px;
+}
+
+/* CHART CARD */
+.ov-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+}
+.ov-cardhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+.ov-ctitle {
+  font-family: "Lora", serif;
+  font-size: 15px;
+  font-weight: 700;
+}
+.ov-csub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.ov-tag {
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--sage-bg);
+  color: var(--sage);
+  padding: 4px 11px;
+  border-radius: 8px;
+}
+
+.ov-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 7px;
+  height: 110px;
+}
+.ov-barwrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  height: 100%;
+  justify-content: flex-end;
+}
+.ov-barval {
+  font-size: 9px;
+  color: var(--muted);
+}
+.ov-bar {
+  width: 100%;
+  border-radius: 5px 5px 0 0;
+  background: var(--sage-bg);
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+  min-height: 4px;
+}
+.ov-bar.active {
+  background: var(--sage) !important;
+  border-color: var(--sage) !important;
+}
+.ov-bar:hover {
+  background: var(--sage-l);
+}
+.ov-barlbl {
+  font-size: 9px;
+  color: var(--muted);
+}
+
+/* PROFILE CARD */
+.ov-pcard {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+}
+.ov-ptop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 13px;
+}
+.ov-pav {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  background: var(--sage-bg);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+.ov-pname {
+  font-family: "Lora", serif;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.ov-pcat {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 7px;
+}
+.ov-prating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+.ov-rnum {
+  font-family: "Lora", serif;
+  font-size: 24px;
+  font-weight: 700;
+}
+.ov-stars {
+  display: flex;
+  gap: 2px;
+}
+.ov-rcnt {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.ov-pirow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 8px;
+}
+.ov-piicon {
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  background: var(--sage-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.ov-pilbl {
+  font-size: 10px;
+  color: var(--muted);
+}
+.ov-pival {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.ov-trust {
+  background: var(--sage-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px;
+  margin-top: 4px;
+}
+.ov-tlbl {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--sage);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.ov-tbar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 100px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+.ov-tfill {
+  height: 100%;
+  border-radius: 100px;
+  background: linear-gradient(90deg, var(--sage), var(--sage-l));
+}
+.ov-trow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ov-tnum {
+  font-family: "Lora", serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--sage);
+}
+.ov-tdesc {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+@media (max-width: 900px) {
+  .ov-two {
+    grid-template-columns: 1fr;
+  }
+}

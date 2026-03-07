@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Hero.module.css";
 
@@ -8,8 +9,15 @@ const proofAvatars = [
   { color: "#E87A5A", letter: "N" },
 ];
 
-const Hero = () => {
+const Hero = ({ onSearch }) => {
   const navigate = useNavigate();
+  const [number, setNumber] = useState("");
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    // Search Free → send to user login
+    navigate("/login");
+  };
 
   return (
     <section className={styles.hero}>
@@ -23,33 +31,35 @@ const Hero = () => {
         </h1>
 
         <p className={styles.heroP}>
-          WhatsApp vendors are everywhere. But are they reliable? Check real
-          reviews from real buyers — using just a phone number.
+          WhatsApp vendors are everywhere. But are they reliable? Search any
+          vendor number right now — no account needed.
         </p>
 
-        <div className={styles.heroBtns}>
-          <button className={styles.btnMain} onClick={() => navigate("/user")}>
-            Add a Vendor
-            <svg
-              width="15"
-              height="15"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#fff"
-              strokeWidth="2.5"
-            >
-              <path d="M12 5v14M5 12h14" />
-            </svg>
+        {/* Search Free → /login (user) */}
+        <form className={styles.heroSearch} onSubmit={handleSearch}>
+          <div className={styles.searchInputWrap}>
+            <span className={styles.searchIcon}>📱</span>
+            <input
+              type="text"
+              placeholder="Enter vendor phone number..."
+              value={number}
+              onChange={(e) => setNumber(e.target.value)}
+              className={styles.searchInput}
+            />
+          </div>
+          <button type="submit" className={styles.searchBtn}>
+            Search Free →
           </button>
-          <button
-            className={styles.btnSec}
-            onClick={() =>
-              document
-                .getElementById("how-it-works")
-                ?.scrollIntoView({ behavior: "smooth" })
-            }
-          >
-            How it works
+        </form>
+
+        <div className={styles.heroBtns}>
+          {/* Review a Vendor → user login */}
+          <button className={styles.btnMain} onClick={() => navigate("/login")}>
+            ⭐ Review a Vendor
+          </button>
+          {/* Add a Vendor → business login */}
+          <button className={styles.btnSec} onClick={() => navigate("/signup")}>
+            ➕ Add a Vendor
           </button>
         </div>
 

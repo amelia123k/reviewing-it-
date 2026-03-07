@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap");
+
+:root {
+  --sage: #2d6a35;
+  --sage-l: #3a7d44;
+  --sage-bg: #f2faf4;
+  --warm: #f7fbf7;
+  --dark: #0d1f12;
+  --body: #3a4a3d;
+  --muted: #7a9a7d;
+  --border: #dce9dc;
+  --white: #ffffff;
+  --red: #e05252;
+}
+
+.vmp-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+.vmp-title {
+  font-family: "Lora", serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--dark);
+}
+.vmp-sub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.vmp-tag {
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--sage-bg);
+  color: var(--sage);
+  padding: 4px 11px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .vmp-head {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

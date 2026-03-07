@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import "./LoginSignUp.css";
 
 const LoginSignUp = () => {
@@ -8,21 +9,44 @@ const LoginSignUp = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
+  const { loginUser } = useAuth();
 
   const handleSubmit = () => {
-    if (isLogin) {
-      console.log("logging in", { email, password });
-    } else {
-      console.log("signing up", { name, email, password, confirmPassword });
+    setError("");
+
+    if (!email || !password) {
+      setError("Please fill in all fields.");
+      return;
     }
-    navigate("/dashboard");
+    if (!isLogin && !name) {
+      setError("Please enter your full name.");
+      return;
+    }
+    if (!isLogin && password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+    if (!isLogin && password.length < 6) {
+      setError("Password must be at least 6 characters.");
+      return;
+    }
+
+    setLoading(true);
+    setTimeout(() => {
+      // Save the user's name into AuthContext
+      loginUser(isLogin ? email.split("@")[0] : name, email);
+      setLoading(false);
+      navigate("/dashboard");
+    }, 800);
   };
 
   return (
     <div className="auth-viewport">
       <div className="auth-card">
-        {/* Wave Header */}
         <div className="wave-wrapper">
           <div className="header-text">
             <h1>{isLogin ? "Welcome Back!" : "Hello Friend!"}</h1>
@@ -32,7 +56,6 @@ const LoginSignUp = () => {
                 : "Create your account to get started"}
             </p>
           </div>
-
           <svg
             className="wave-svg"
             viewBox="0 0 1200 120"
@@ -58,7 +81,6 @@ const LoginSignUp = () => {
           </svg>
         </div>
 
-        {/* Body */}
         <div className="auth-body">
           {!isLogin && (
             <input
@@ -79,6 +101,7 @@ const LoginSignUp = () => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
           />
           {!isLogin && (
             <input
@@ -89,11 +112,14 @@ const LoginSignUp = () => {
             />
           )}
 
-          <button 
+          {error && <p className="auth-error">{error}</p>}
+
+          <button
             className="primary-btn"
             onClick={handleSubmit}
+            disabled={loading}
           >
-            {isLogin ? "Sign In" : "Sign Up"}
+            {loading ? "Please wait..." : isLogin ? "Sign In" : "Sign Up"}
           </button>
 
           <p className="forgot-password">Forgot Password?</p>
@@ -107,12 +133,17 @@ const LoginSignUp = () => {
 
           <p className="switch-text">
             {isLogin ? "New here?" : "Already have an account?"}
-            <span onClick={() => setIsLogin(!isLogin)}>
+            <span
+              onClick={() => {
+                setIsLogin(!isLogin);
+                setError("");
+              }}
+            >
               {isLogin ? " Sign Up" : " Sign In"}
             </span>
           </p>
 
-          <p className="nav" onClick={() => navigate("/business")}>
+          <p className="nav" onClick={() => navigate("/signup")}>
             Register as Business
           </p>
         </div>

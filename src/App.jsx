@@ -1,41 +1,46 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { ChatProvider }  from "./context/ChatContext";
+import { AuthProvider }  from "./context/AuthContext";
 
-// Landing Page
+// ── 1. LANDING
 import LandingPage from "./components/LandingPage/LandingPage";
 
-// Auth Pages
-import LoginSignUp from "./components/LoginSignUp/LoginSignUp";
+// ── 2. AUTH
+import LoginSignUp    from "./components/LoginSignUp/LoginSignUp";
 import BusinessSignUp from "./components/BusinessSignUp/BusinessSignUp";
 
-// User Dashboard Pages
-import Dashboard from "./pages/Dashboard";
-import MyReviews from "./pages/MyReviews";
-import SavedVendors from "./pages/SavedVendors";
+// ── 3. USER DASHBOARD
+import Dashboard       from "./pages/Dashboard";
+import MyReviews       from "./pages/MyReviews";
+import SavedVendors    from "./pages/SavedVendors";
 import ReportedVendors from "./pages/ReportedVendors";
-import Settings from "./pages/Settings";
+import Settings        from "./pages/Settings";
+import Messages        from "./pages/Vendor/Messages";
+
+// ── 4. VENDOR DASHBOARD
+import VendorDashboard from "./pages/Vendor/VendorDashboard";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Home — Landing Page */}
-        <Route path="/" element={<LandingPage />} />
-
-        {/* Authentication */}
-        <Route path="/user" element={<LoginSignUp />} />
-        <Route path="/business" element={<BusinessSignUp />} />
-
-        {/* User Dashboard Routes */}
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/reviews" element={<MyReviews />} />
-        <Route path="/saved" element={<SavedVendors />} />
-        <Route path="/reports" element={<ReportedVendors />} />
-        <Route path="/settings" element={<Settings />} />
-
-        {/* Fallback */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider>
+      <ChatProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/"                 element={<LandingPage />} />
+            <Route path="/login"            element={<LoginSignUp />} />
+            <Route path="/signup"           element={<BusinessSignUp />} />
+            <Route path="/dashboard"        element={<Dashboard />} />
+            <Route path="/reviews"          element={<MyReviews />} />
+            <Route path="/saved"            element={<SavedVendors />} />
+            <Route path="/reports"          element={<ReportedVendors />} />
+            <Route path="/settings"         element={<Settings />} />
+            <Route path="/messages"         element={<Messages />} />
+            <Route path="/vendor-dashboard" element={<VendorDashboard />} />
+            <Route path="*"                 element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </ChatProvider>
+    </AuthProvider>
   );
 }
 
