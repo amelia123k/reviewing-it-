@@ -26,7 +26,7 @@ const Settings = () => {
           onClick={() => navigate("/dashboard")}
         >
           <ArrowLeft size={20} />
-          Back to Dashboard
+          Back to Home
         </button>
         <h1>Settings</h1>
       </div>

@@ -9,12 +9,12 @@ const stats = [
 
 const values = [
   {
-    icon: "🛡️",
+    icon: "",
     title: "Trust First",
     desc: "Every feature we build is designed to protect buyers and reward honest vendors.",
   },
   {
-    icon: "🌍",
+    icon: "",
     title: "Built for Us",
     desc: "SafeBuy is made specifically for Cameroon — our language, our markets, our problems.",
   },
@@ -24,7 +24,7 @@ const values = [
     desc: "No fake ratings. Reviews come from verified buyers who actually transacted.",
   },
   {
-    icon: "🤝",
+    icon: "",
     title: "Fair to Vendors",
     desc: "Good vendors get visibility. We help trustworthy businesses grow their reputation.",
   },
@@ -82,7 +82,7 @@ const About = () => (
           </p>
         </div>
         <div className={styles.missionCard}>
-          <div className={styles.mcIcon}>🌿</div>
+          <div className={styles.mcIcon}></div>
           <p className={styles.mcQuote}>
             "Commerce should work for everyone — not just people with
             connections."

@@ -146,7 +146,7 @@ export default function VendorReviews() {
                 setReplyTxt("");
               }}
             >
-              💬 Reply
+               Reply
             </button>
           )}
         </div>

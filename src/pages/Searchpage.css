@@ -1,0 +1,281 @@
+.searchpage {
+  min-height: 100vh;
+  background: #f9fafb;
+  padding: 20px;
+}
+
+.searchpage-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.searchpage-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  color: #374151;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.searchpage-back:hover {
+  background: #f3f4f6;
+  border-color: #10b981;
+}
+
+.searchpage-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 8px 0;
+}
+
+.searchpage-header p {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.searchpage-filters {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.searchpage-searchbar {
+  flex: 1;
+  position: relative;
+}
+
+.searchpage-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+}
+
+.searchpage-input {
+  width: 100%;
+  padding: 12px 16px 12px 48px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.2s;
+}
+
+.searchpage-input:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.searchpage-category-filter {
+  min-width: 200px;
+}
+
+.searchpage-select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 16px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.searchpage-select:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.searchpage-results {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.searchpage-empty {
+  text-align: center;
+  padding: 80px 20px;
+  color: #6b7280;
+}
+
+.searchpage-empty-icon {
+  margin-bottom: 16px;
+  color: #d1d5db;
+}
+
+.searchpage-empty h3 {
+  font-size: 20px;
+  margin: 0 0 8px 0;
+  color: #374151;
+}
+
+.searchpage-empty p {
+  font-size: 16px;
+  margin: 0;
+}
+
+.searchpage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+}
+
+.searchpage-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s;
+}
+
+.searchpage-card:hover {
+  border-color: #10b981;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.searchpage-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.searchpage-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.searchpage-info {
+  flex: 1;
+}
+
+.searchpage-info h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 4px 0;
+}
+
+.searchpage-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.searchpage-category {
+  font-size: 14px;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.searchpage-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #10b981;
+}
+
+.searchpage-trust {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: rgba(16, 185, 129, 0.1);
+  white-space: nowrap;
+}
+
+.searchpage-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.searchpage-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.searchpage-detail svg {
+  color: #9ca3af;
+}
+
+.searchpage-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid #f3f4f6;
+}
+
+.searchpage-reviews-count {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.searchpage-view-btn {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.searchpage-view-btn:hover {
+  background: #059669;
+}
+
+@media (max-width: 768px) {
+  .searchpage {
+    padding: 16px;
+  }
+  
+  .searchpage-filters {
+    flex-direction: column;
+  }
+  
+  .searchpage-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .searchpage-card-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .searchpage-meta {
+    justify-content: center;
+  }
+}

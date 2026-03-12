@@ -1,256 +1,520 @@
-import { useState } from "react";
-import { useAuth } from "../../context/AuthContext";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import Navbar from "../../components/Dashboard/Navbar/Navbar";
+import Searchpanel from "../../components/Searchpanel";
+import VendorPreview from "../../components/VendorPreview";
+import { MapPin } from "lucide-react";
 import "./VendorDashboard.css";
-import VendorSidebar from "./VendorSidebar";
-import VendorOverview from "./VendorOverview";
-import VendorReviews from "./VendorReviews";
-import VendorMessagesPage from "./VendorMessagesPage";
-import VendorCustomers from "./VendorCustomers";
-import VendorComplaints from "./VendorComplaints";
-import VendorProfile from "./VendorProfile";
 
-const NOTIFS = [
+const categories = [
+  "All Categories",
+  "Food & Drinks",
+  "Fashion",
+  "Electronics",
+  "Services",
+  "Skin Care",
+  "Shoes",
+  "Health & Wellness",
+];
+
+export const vendors = [
   {
     id: 1,
-    text: "Yvonne T. sent you a message",
-    time: "5 min ago",
-    read: false,
-    color: "#2D6A35",
+    name: "Mokolo Kitchen",
+    category: "Food & Drinks",
+    number: "+237 650 234 891",
+    rating: 4.8,
+    color: "#1A6B3C",
+    city: "Buea",
+    reviews: [
+      {
+        stars: 5,
+        text: "Best pepper soup in Buea! Always fresh.",
+        date: "16 Feb 2026",
+        author: "Yvonne T.",
+      },
+      {
+        stars: 4,
+        text: "Fast delivery, food still hot.",
+        date: "14 Feb 2026",
+        author: "Boris N.",
+      },
+    ],
   },
   {
     id: 2,
-    text: "New complaint submitted by Boris N.",
-    time: "1 hour ago",
-    read: false,
-    color: "#E05252",
+    name: "Fako Styles",
+    category: "Fashion",
+    number: "+237 677 102 334",
+    rating: 4.6,
+    color: "#2D6A35",
+    city: "Buea",
+    reviews: [
+      {
+        stars: 5,
+        text: "Made my dress exactly how I described it.",
+        date: "15 Feb 2026",
+        author: "Sandra A.",
+      },
+    ],
   },
   {
     id: 3,
-    text: "Miriam C. left a 3-star review",
-    time: "1 day ago",
-    read: true,
-    color: "#7A9A7D",
+    name: "Mountain Gadgets",
+    category: "Electronics",
+    number: "+237 681 556 778",
+    rating: 3.5,
+    color: "#4A5568",
+    city: "Buea",
+    reviews: [
+      {
+        stars: 3,
+        text: "Product came but charger was missing.",
+        date: "11 Feb 2026",
+        author: "Kome R.",
+      },
+    ],
   },
   {
     id: 4,
-    text: "43 people viewed your profile",
-    time: "2 days ago",
-    read: true,
-    color: "#7A9A7D",
+    name: "Glow & Go Beauty",
+    category: "Skin Care",
+    number: "+237 699 223 445",
+    rating: 4.9,
+    color: "#1A6B3C",
+    city: "Buea",
+    reviews: [
+      {
+        stars: 5,
+        text: "Skin cleared up in 2 weeks.",
+        date: "20 Feb 2026",
+        author: "Miriam C.",
+      },
+      {
+        stars: 5,
+        text: "She explains every product before selling.",
+        date: "17 Feb 2026",
+        author: "Cynthia E.",
+      },
+    ],
+  },
+  {
+    id: 5,
+    name: "Buea Sole Shop",
+    category: "Shoes",
+    number: "+237 670 334 556",
+    rating: 4.3,
+    color: "#2D6A35",
+    city: "Buea",
+    reviews: [
+      {
+        stars: 4,
+        text: "Nice quality, true to size.",
+        date: "18 Feb 2026",
+        author: "Frank O.",
+      },
+    ],
+  },
+  {
+    id: 6,
+    name: "Akwa Bites",
+    category: "Food & Drinks",
+    number: "+237 655 667 112",
+    rating: 4.5,
+    color: "#1A6B3C",
+    city: "Douala",
+    reviews: [
+      {
+        stars: 5,
+        text: "Ndole was fresh and absolutely delicious.",
+        date: "22 Feb 2026",
+        author: "Claudine M.",
+      },
+      {
+        stars: 4,
+        text: "A bit slow but worth the wait.",
+        date: "19 Feb 2026",
+        author: "Roger T.",
+      },
+    ],
+  },
+  {
+    id: 7,
+    name: "Bonaberi Threads",
+    category: "Fashion",
+    number: "+237 699 778 990",
+    rating: 4.7,
+    color: "#2D6A35",
+    city: "Douala",
+    reviews: [
+      {
+        stars: 5,
+        text: "Best lace fabrics in Douala.",
+        date: "21 Feb 2026",
+        author: "Ingrid N.",
+      },
+    ],
+  },
+  {
+    id: 8,
+    name: "DLA Tech Zone",
+    category: "Electronics",
+    number: "+237 676 889 001",
+    rating: 4.1,
+    color: "#1A6B3C",
+    city: "Douala",
+    reviews: [
+      {
+        stars: 4,
+        text: "Original phones at fair prices.",
+        date: "14 Feb 2026",
+        author: "Joel A.",
+      },
+      {
+        stars: 3,
+        text: "Warranty process too long.",
+        date: "10 Feb 2026",
+        author: "Eric B.",
+      },
+    ],
+  },
+  {
+    id: 9,
+    name: "Deido Fix-It",
+    category: "Services",
+    number: "+237 651 990 112",
+    rating: 4.6,
+    color: "#2D6A35",
+    city: "Douala",
+    reviews: [
+      {
+        stars: 5,
+        text: "Fixed my AC same day.",
+        date: "12 Feb 2026",
+        author: "Patricia F.",
+      },
+    ],
+  },
+  {
+    id: 10,
+    name: "Littoral Wellness",
+    category: "Health & Wellness",
+    number: "+237 677 001 223",
+    rating: 4.7,
+    color: "#1A6B3C",
+    city: "Douala",
+    reviews: [
+      {
+        stars: 5,
+        text: "Certified products only.",
+        date: "21 Feb 2026",
+        author: "Estelle K.",
+      },
+    ],
+  },
+  {
+    id: 11,
+    name: "Mvog-Ada Eats",
+    category: "Food & Drinks",
+    number: "+237 670 112 445",
+    rating: 4.4,
+    color: "#2D6A35",
+    city: "Yaounde",
+    reviews: [
+      {
+        stars: 5,
+        text: "Okok and plantains better than my mama makes.",
+        date: "23 Feb 2026",
+        author: "Hermine L.",
+      },
+    ],
+  },
+  {
+    id: 12,
+    name: "Bastos Boutique",
+    category: "Fashion",
+    number: "+237 655 223 556",
+    rating: 4.8,
+    color: "#1A6B3C",
+    city: "Yaounde",
+    reviews: [
+      {
+        stars: 5,
+        text: "Top quality fabrics.",
+        date: "20 Feb 2026",
+        author: "Solange D.",
+      },
+      {
+        stars: 5,
+        text: "My go-to shop.",
+        date: "16 Feb 2026",
+        author: "Pauline V.",
+      },
+    ],
+  },
+  {
+    id: 13,
+    name: "Yaounde Phone Hub",
+    category: "Electronics",
+    number: "+237 699 334 667",
+    rating: 2.2,
+    color: "#7B2D2D",
+    city: "Yaounde",
+    reviews: [
+      {
+        stars: 2,
+        text: "Sold me a refurbished phone as brand new.",
+        date: "9 Feb 2026",
+        author: "Gilbert M.",
+      },
+    ],
+  },
+  {
+    id: 14,
+    name: "Capital Repairs",
+    category: "Services",
+    number: "+237 677 445 778",
+    rating: 4.5,
+    color: "#2D6A35",
+    city: "Yaounde",
+    reviews: [
+      {
+        stars: 5,
+        text: "Very honest technician.",
+        date: "22 Feb 2026",
+        author: "Bertrand N.",
+      },
+    ],
+  },
+  {
+    id: 15,
+    name: "Nlongkak Skincare",
+    category: "Skin Care",
+    number: "+237 651 556 889",
+    rating: 4.6,
+    color: "#1A6B3C",
+    city: "Yaounde",
+    reviews: [
+      {
+        stars: 5,
+        text: "Only genuine products.",
+        date: "19 Feb 2026",
+        author: "Adrienne P.",
+      },
+    ],
   },
 ];
 
-export default function VendorDashboard() {
-  const { user } = useAuth();
-  const [page, setPage] = useState("overview");
-  const [notifs, setNotifs] = useState(NOTIFS);
-  const [info, setInfo] = useState({
-    name: user?.name || "Mokolo Kitchen",
-    phone: "+237 650 234 891",
-    category: "Food & Drinks",
-    location: "Buea",
-    bio: "Best home-cooked meals in Buea.",
-  });
-  const [form, setForm] = useState(info);
-  const [modal, setModal] = useState(false);
-  const [toast, setToast] = useState(false);
-  const [sideOpen, setSideOpen] = useState(false);
+const RatingBadge = ({ rating }) => {
+  const cls =
+    rating >= 4.5 ? "badge-high" : rating >= 3 ? "badge-mid" : "badge-low";
+  return (
+    <div className={`db-rating-badge ${cls}`}>
+      <span>{rating}</span>
+      <span>/ 5</span>
+    </div>
+  );
+};
 
-  const markRead = (id) =>
-    setNotifs((p) => p.map((n) => (n.id === id ? { ...n, read: true } : n)));
-  const clearAll = () => setNotifs((p) => p.map((n) => ({ ...n, read: true })));
-  const openEdit = () => {
-    setForm({ ...info });
-    setModal(true);
-  };
-  const save = () => {
-    setInfo({ ...form });
-    setModal(false);
-  };
-  const share = () => {
-    navigator.clipboard?.writeText("safebuy.cm/vendor/mokolo-kitchen");
-    setToast(true);
-    setTimeout(() => setToast(false), 3000);
+const Dashboard = () => {
+  const [searchParams] = useSearchParams();
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [selectedVendor, setSelectedVendor] = useState(null);
+  const [openWriteTab, setOpenWriteTab] = useState(false);
+  const [searchedQuery, setSearchedQuery] = useState(null);
+  const [activeCategory, setActiveCategory] = useState("All Categories");
+  const [notifications, setNotifications] = useState([
+    {
+      id: 1,
+      text: "Your review received 5 likes",
+      time: "5m ago",
+      read: false,
+    },
+    { id: 2, text: "New scam alert in your area", time: "1h ago", read: false },
+    {
+      id: 3,
+      text: "Vendor responded to your review",
+      time: "3h ago",
+      read: true,
+    },
+  ]);
+
+  const markAsRead = (id) =>
+    setNotifications((n) =>
+      n.map((x) => (x.id === id ? { ...x, read: true } : x)),
+    );
+
+  // When coming from landing page search OR returning after login to write a review
+  useEffect(() => {
+    const q = searchParams.get("q");
+    const vendorId = searchParams.get("vendor");
+    const write = searchParams.get("write");
+
+    if (vendorId) {
+      const v = vendors.find((v) => String(v.id) === vendorId);
+      if (v) {
+        setSelectedVendor(v);
+        if (write === "1") setOpenWriteTab(true);
+      }
+    } else if (q) {
+      // Auto-find best match and open their modal
+      const q2 = q.toLowerCase();
+      setSearchedQuery(q);
+      const match = vendors.find(
+        (v) =>
+          v.number.replace(/\s/g, "").includes(q2.replace(/\s/g, "")) ||
+          v.name.toLowerCase().includes(q2),
+      );
+      if (match) setSelectedVendor(match);
+    }
+  }, []);
+
+  const allCats = categories.filter((c) => c !== "All Categories");
+  const displayedCats = allCats
+    .map((cat) => ({
+      name: cat,
+      vendors: vendors.filter(
+        (v) =>
+          (activeCategory === "All Categories" ||
+            v.category === activeCategory) &&
+          v.category === cat,
+      ),
+    }))
+    .filter((c) => activeCategory === "All Categories" || c.vendors.length > 0);
+
+  const handleVendorClick = (v) => {
+    setSelectedVendor(v);
+    setOpenWriteTab(false);
   };
 
-  const pages = {
-    overview: <VendorOverview info={info} />,
-    reviews: <VendorReviews />,
-    messages: <VendorMessagesPage />,
-    customers: <VendorCustomers goMessages={() => setPage("messages")} />,
-    complaints: <VendorComplaints />,
-    profile: <VendorProfile info={info} onEdit={openEdit} />,
+  const handleClosePreview = () => {
+    setSelectedVendor(null);
+    setOpenWriteTab(false);
   };
 
   return (
-    <div className="vd-wrap">
-      {/* MOBILE OVERLAY */}
-      {sideOpen && (
-        <div className="vd-mob-overlay" onClick={() => setSideOpen(false)} />
-      )}
-
-      <VendorSidebar
-        activePage={page}
-        setActivePage={(p) => {
-          setPage(p);
-          setSideOpen(false);
-        }}
-        vendorName={info.name}
-        notifications={notifs}
-        onMarkRead={markRead}
-        onClearAll={clearAll}
-        mobileOpen={sideOpen}
+    <div className="db-page">
+      <Navbar
+        onSearchClick={() => setSearchOpen(true)}
+        notifications={notifications}
+        markAsRead={markAsRead}
       />
 
-      <main className="vd-main">
-        {/* TOPBAR */}
-        <div className="vd-top">
-          <div className="vd-top-left">
-            <button
-              className="vd-hamburger"
-              onClick={() => setSideOpen((o) => !o)}
-            >
-              ☰
-            </button>
-            <div>
-              <h1 className="vd-h1">Good morning 👋</h1>
-              <p className="vd-sub">
-                Here's how <strong>{info.name}</strong> is performing.
-              </p>
-            </div>
-          </div>
-          <div className="vd-topbtns">
-            <button className="vd-btn-green" onClick={share}>
-              📲 Share
-            </button>
-            <button className="vd-btn-white" onClick={openEdit}>
-              ✏️ Edit Profile
-            </button>
-          </div>
-        </div>
-
-        {/* QUICK ACTIONS — Share card removed */}
-        <div className="vd-qa">
-          {[
-            {
-              icon: "✉️",
-              bg: "#F0FDF4",
-              label: "Messages",
-              sub: "2 unread",
-              pg: "messages",
-            },
-            {
-              icon: "🚩",
-              bg: "#FFF0F0",
-              label: "Complaint",
-              sub: "Needs attention",
-              pg: "complaints",
-            },
-            {
-              icon: "👥",
-              bg: "#EEF2FF",
-              label: "Customers",
-              sub: "12 this month",
-              pg: "customers",
-            },
-          ].map((q, i) => (
-            <div key={i} className="vd-qacard" onClick={() => setPage(q.pg)}>
-              <div className="vd-qaicon" style={{ background: q.bg }}>
-                {q.icon}
-              </div>
-              <div>
-                <p className="vd-qalabel">{q.label}</p>
-                <p className="vd-qasub">{q.sub}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* STATS */}
-        <div className="vd-stats">
-          {[
-            { icon: "⭐", num: "4.8", label: "Avg Rating", chg: "↑ +0.1" },
-            { icon: "💬", num: "28", label: "Reviews", chg: "↑ +5" },
-            { icon: "👁️", num: "198", label: "Views", chg: "↑ +43" },
-          ].map((st, i) => (
-            <div key={i} className="vd-stat">
-              <span>{st.icon}</span>
-              <p className="vd-stnum">{st.num}</p>
-              <p className="vd-stlbl">{st.label}</p>
-              <p className="vd-stchg">{st.chg}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* ACTIVE PAGE */}
-        {pages[page]}
-      </main>
-
-      {/* EDIT MODAL */}
-      {modal && (
-        <div className="vd-overlay" onClick={() => setModal(false)}>
-          <div className="vd-modal" onClick={(e) => e.stopPropagation()}>
-            <p className="vd-mtitle">Edit Business Info</p>
-            <p className="vd-msub">
-              Keep your profile accurate so buyers can trust you.
-            </p>
-            {[
-              { lbl: "Business Name", k: "name" },
-              { lbl: "WhatsApp", k: "phone" },
-              { lbl: "Location", k: "location" },
-            ].map((f) => (
-              <div key={f.k} className="vd-fgroup">
-                <label className="vd-flbl">{f.lbl}</label>
-                <input
-                  className="vd-finput"
-                  value={form[f.k]}
-                  onChange={(e) => setForm({ ...form, [f.k]: e.target.value })}
-                />
-              </div>
-            ))}
-            <div className="vd-fgroup">
-              <label className="vd-flbl">Category</label>
-              <select
-                className="vd-finput"
-                value={form.category}
-                onChange={(e) => setForm({ ...form, category: e.target.value })}
-              >
-                {[
-                  "Food & Drinks",
-                  "Fashion",
-                  "Electronics",
-                  "Skin Care",
-                  "Services",
-                  "Health & Wellness",
-                  "Other",
-                ].map((c) => (
-                  <option key={c}>{c}</option>
-                ))}
-              </select>
-            </div>
-            <div className="vd-fgroup">
-              <label className="vd-flbl">Bio</label>
-              <textarea
-                className="vd-finput"
-                rows={3}
-                style={{ resize: "none" }}
-                value={form.bio}
-                onChange={(e) => setForm({ ...form, bio: e.target.value })}
-              />
-            </div>
-            <div className="vd-mbtns">
-              <button className="vd-mcancel" onClick={() => setModal(false)}>
-                Cancel
-              </button>
-              <button className="vd-msave" onClick={save}>
-                Save Changes
-              </button>
-            </div>
-          </div>
-        </div>
+      {searchOpen && (
+        <SearchPanel
+          vendors={vendors}
+          onSelectVendor={(v) => {
+            setSelectedVendor(v);
+            setOpenWriteTab(false);
+          }}
+          onClose={() => setSearchOpen(false)}
+        />
       )}
 
-      {toast && <div className="vd-toast">✅ Profile link copied!</div>}
+      {selectedVendor && (
+        <VendorPreview
+          vendor={selectedVendor}
+          initialTab={openWriteTab ? "write" : "reviews"}
+          onClose={handleClosePreview}
+        />
+      )}
+
+      <main className="db-main">
+        {/* HERO SEARCH */}
+        <div className="db-hero">
+          <h1 className="db-hero-title">Find & verify any vendor</h1>
+          <p className="db-hero-sub">
+            Search by phone number or name — no account needed
+          </p>
+          <div className="db-hero-search" onClick={() => setSearchOpen(true)}>
+            <span className="db-hero-icon">📱</span>
+            <span className="db-hero-placeholder">
+              Enter vendor phone number or Name.
+            </span>
+            <button className="db-hero-btn">Search Free</button>
+          </div>
+        </div>
+
+        {/* CATEGORY TABS */}
+        <div className="db-cat-tabs">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              className={`db-cat-tab${activeCategory === cat ? " active" : ""}`}
+              onClick={() => setActiveCategory(cat)}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        {/* NOT FOUND STATE */}
+        {searchedQuery && !selectedVendor ? (
+          <div className="db-not-found">
+            <div className="db-nf-icon">🔍</div>
+            <h2 className="db-nf-title">No vendor found</h2>
+            <p className="db-nf-sub">
+              We couldn't find anyone matching{" "}
+              <strong>"{searchedQuery}"</strong> in our database.
+            </p>
+            <p className="db-nf-hint">
+              This vendor may not be listed yet — try browsing below or search
+              by name.
+            </p>
+            <button
+              className="db-nf-btn"
+              onClick={() => setSearchedQuery(null)}
+            >
+              Browse all vendors
+            </button>
+          </div>
+        ) : (
+          displayedCats.map((cat) => (
+            <div key={cat.name} className="db-cat-section">
+              <div className="db-cat-head">
+                <h3 className="db-cat-title">{cat.name}</h3>
+                <span className="db-cat-count">
+                  {cat.vendors.length} vendor
+                  {cat.vendors.length !== 1 ? "s" : ""}
+                </span>
+              </div>
+              <div className="db-vendor-grid">
+                {cat.vendors.map((v) => (
+                  <div
+                    key={v.id}
+                    className="db-vendor-card"
+                    onClick={() => handleVendorClick(v)}
+                  >
+                    <div
+                      className="db-card-strip"
+                      style={{ background: v.color }}
+                    />
+                    <div className="db-card-body">
+                      <div className="db-card-name">{v.name}</div>
+                      <div className="db-card-cat">
+                        <MapPin size={10} /> {v.city} · {v.category}
+                      </div>
+                      <div className="db-card-bottom">
+                        <div className="db-card-stars">
+                          {"★".repeat(Math.round(v.rating))}
+                          {"☆".repeat(5 - Math.round(v.rating))}
+                        </div>
+                        <span className="db-card-rev">
+                          {v.reviews.length} review
+                          {v.reviews.length !== 1 ? "s" : ""}
+                        </span>
+                      </div>
+                    </div>
+                    <RatingBadge rating={v.rating} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))
+        )}
+      </main>
     </div>
   );
-}
+};
+
+export default Dashboard;

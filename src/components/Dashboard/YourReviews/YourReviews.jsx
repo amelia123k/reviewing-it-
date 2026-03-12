@@ -8,7 +8,7 @@ const reviews = [
     date: "Apr 17, 2024",
     posted: "Apr 21, 2024",
     content:
-      "Ordered jollof and chicken, arrived on time, food was so delicious! 🥰",
+      "Ordered jollof and chicken, arrived on time, food was so delicious! ",
   },
   {
     rating: 1,

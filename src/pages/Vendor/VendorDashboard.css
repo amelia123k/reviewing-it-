@@ -22,7 +22,6 @@
   color: var(--dark);
 }
 .vd-main {
-  margin-left: 230px;
   flex: 1;
   padding: 28px 30px;
   background: #fff;
@@ -312,7 +311,6 @@
 /* RESPONSIVE */
 @media (max-width: 900px) {
   .vd-main {
-    margin-left: 0;
     padding: 16px;
   }
   .vd-hamburger {

@@ -42,7 +42,7 @@ export default function VendorOverview({ info }) {
 
       <div className="ov-pcard">
         <div className="ov-ptop">
-          <div className="ov-pav">🍽️</div>
+          <div className="ov-pav"></div>
           <p className="ov-pname">{info.name}</p>
           <p className="ov-pcat">
             {info.category} · {info.location}

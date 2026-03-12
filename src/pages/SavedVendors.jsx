@@ -1,98 +1,124 @@
-import React from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Star, Bookmark, Phone, MapPin } from "lucide-react";
-import styles from "./SavedVendors.module.css";
+import { useAuth } from "../context/AuthContext";
+import Navbar from "../components/Dashboard/Navbar/Navbar";
+import VendorPreview from "../components/VendorPreview";
+import { Bookmark, Trash2, MapPin, Star, ArrowLeft } from "lucide-react";
+import { vendors } from "./Dashboard";
+import "./SavedVendors.css";
 
-const savedVendors = [
-  {
-    id: 1,
-    name: "Mama's Kitchen",
-    number: "+237 650 123 789",
-    category: "Food",
-    rating: 4.2,
-    location: "Buea",
-    savedDate: "Apr 15, 2024",
-  },
-  {
-    id: 2,
-    name: "Quick Repairs",
-    number: "+237 652 789 567",
-    category: "Services",
-    rating: 4.8,
-    location: "Douala",
-    savedDate: "Apr 10, 2024",
-  },
-  {
-    id: 3,
-    name: "Style Africa",
-    number: "+237 654 567 123",
-    category: "Fashion",
-    rating: 3.9,
-    location: "Yaoundé",
-    savedDate: "Apr 5, 2024",
-  },
-];
+// Demo: pre-saved some vendors
+const INITIAL_SAVED = [1, 4, 6, 12];
 
-const SavedVendors = () => {
+export default function SavedVendors() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [savedIds, setSavedIds] = useState(INITIAL_SAVED);
+  const [selectedVendor, setSelected] = useState(null);
+  const [notifications] = useState([]);
+
+  const savedVendors = vendors.filter((v) => savedIds.includes(v.id));
+
+  const unsave = (id) => setSavedIds((p) => p.filter((x) => x !== id));
+
+  const ratingColor = (r) =>
+    r >= 4.5 ? "#166534" : r >= 3 ? "#92400E" : "#991B1B";
+  const ratingBg = (r) =>
+    r >= 4.5 ? "#F0FDF4" : r >= 3 ? "#FEFCE8" : "#FEF2F2";
 
   return (
-    <div className={styles.pageContainer}>
-      <div className={styles.pageHeader}>
-        <button
-          className={styles.backBtn}
-          onClick={() => navigate("/dashboard")}
-        >
-          <ArrowLeft size={20} />
-          Back to Dashboard
-        </button>
-        <h1>Saved Vendors</h1>
-        <p className={styles.pageSubtitle}>
-          Vendors you've bookmarked for later
-        </p>
-      </div>
+    <div className="sv-page">
+      <Navbar
+        notifications={notifications}
+        onSearchClick={() => {}}
+        markAsRead={() => {}}
+      />
 
-      <div className={styles.vendorsGrid}>
-        {savedVendors.map((vendor) => (
-          <div key={vendor.id} className={styles.vendorCard}>
-            <div className={styles.vendorCardHeader}>
-              <div>
-                <h3>{vendor.name}</h3>
-                <span className={styles.vendorCategory}>{vendor.category}</span>
-              </div>
-              <Bookmark
-                className={styles.savedIcon}
-                size={20}
-                fill="#10b981"
-                color="#10b981"
-              />
-            </div>
-
-            <div className={styles.vendorDetails}>
-              <p className={styles.vendorPhone}>
-                <Phone size={14} />
-                {vendor.number}
-              </p>
-              <p className={styles.vendorLocation}>
-                <MapPin size={14} />
-                {vendor.location}
-              </p>
-            </div>
-
-            <div className={styles.vendorFooter}>
-              <div className={styles.vendorRating}>
-                <Star size={14} fill="#f59e0b" color="#f59e0b" />
-                <span>{vendor.rating}</span>
-              </div>
-              <span className={styles.savedDate}>Saved {vendor.savedDate}</span>
-            </div>
-
-            <button className={styles.viewVendorBtn}>View Details</button>
+      <main className="sv-main">
+        <div className="sv-header">
+         
+          <div>
+            <h1 className="sv-title">
+              <Bookmark size={22} /> Saved Vendors
+            </h1>
+            <p className="sv-sub">
+              {savedVendors.length} vendor{savedVendors.length !== 1 ? "s" : ""}{" "}
+              saved
+            </p>
           </div>
-        ))}
-      </div>
+        </div>
+
+        {savedVendors.length === 0 ? (
+          <div className="sv-empty">
+            <div className="sv-empty-icon"></div>
+            <h3>No saved vendors yet</h3>
+            <p>
+              When you save a vendor from their profile, they'll appear here.
+            </p>
+            <button onClick={() => navigate("/dashboard")}>
+              Browse Vendors 
+            </button>
+          </div>
+        ) : (
+          <div className="sv-grid">
+            {savedVendors.map((v) => (
+              <div key={v.id} className="sv-card">
+                <div
+                  className="sv-card-strip"
+                  style={{ background: v.color }}
+                />
+                <div className="sv-card-av" style={{ background: v.color }}>
+                  {v.name[0]}
+                </div>
+                <div className="sv-card-body">
+                  <p className="sv-card-name">{v.name}</p>
+                  <p className="sv-card-meta">
+                    <MapPin size={11} /> {v.city} · {v.category}
+                  </p>
+                  <div className="sv-card-row">
+                    <span className="sv-stars">
+                      {"★".repeat(Math.round(v.rating))}
+                      {"☆".repeat(5 - Math.round(v.rating))}
+                    </span>
+                    <span
+                      className="sv-rating"
+                      style={{
+                        background: ratingBg(v.rating),
+                        color: ratingColor(v.rating),
+                      }}
+                    >
+                      <Star size={10} fill="currentColor" /> {v.rating}
+                    </span>
+                  </div>
+                  <p className="sv-phone">📞 {v.number}</p>
+                </div>
+                <div className="sv-card-actions">
+                  <button
+                    className="sv-btn-view"
+                    onClick={() => setSelected(v)}
+                  >
+                    View Profile
+                  </button>
+                  <button
+                    className="sv-btn-remove"
+                    onClick={() => unsave(v.id)}
+                    title="Remove from saved"
+                  >
+                    <Trash2 size={15} />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </main>
+
+      {selectedVendor && (
+        <VendorPreview
+          vendor={selectedVendor}
+          onClose={() => setSelected(null)}
+        />
+      )}
     </div>
   );
-};
-
-export default SavedVendors;
+}

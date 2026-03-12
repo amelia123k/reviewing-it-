@@ -1,111 +1,216 @@
-import React from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  ArrowLeft,
-  Flag,
-  AlertTriangle,
-  CheckCircle,
-  Clock,
-} from "lucide-react";
-import styles from "./ReportedVendors.module.css";
+import Navbar from "../components/Dashboard/Navbar/Navbar";
+import VendorPreview from "../components/VendorPreview";
+import { Flag, Trash2, ArrowLeft, MapPin } from "lucide-react";
+import { vendors } from "./Dashboard";
+import "./ReportedVendors.css";
 
-const reportedVendors = [
+const REASONS = [
+  "Scam / Fraud",
+  "Fake products",
+  "Never delivered",
+  "Rude behaviour",
+  "Wrong item sent",
+  "Other",
+];
+
+const INITIAL_REPORTS = [
   {
     id: 1,
-    name: "Tech Hub",
-    number: "+237 651 456 234",
-    reason: "Scam - Took money and blocked",
-    reportedBy: "Sarah Smith",
-    date: "Apr 17, 2024",
-    status: "pending",
-    statusText: "Under Review",
-  },
-  {
-    id: 2,
-    name: "Fast Food Express",
-    number: "+237 653 321 890",
-    reason: "Fake products delivered",
-    reportedBy: "John Doe",
-    date: "Apr 15, 2024",
-    status: "resolved",
-    statusText: "Resolved",
-  },
-  {
-    id: 3,
-    name: "Phone Guy",
-    number: "+237 655 876 456",
-    reason: "Never delivered after payment",
-    reportedBy: "Emma Wilson",
-    date: "Apr 12, 2024",
-    status: "pending",
-    statusText: "Under Review",
+    vendorId: 13,
+    reason: "Scam / Fraud",
+    note: "Sold me a refurbished phone as brand new.",
+    date: "9 Feb 2026",
   },
 ];
 
-const getStatusIcon = (status) => {
-  if (status === "resolved") return <CheckCircle size={16} color="#10b981" />;
-  if (status === "pending") return <Clock size={16} color="#f59e0b" />;
-  return <AlertTriangle size={16} color="#ef4444" />;
-};
-
-const ReportedVendors = () => {
+export default function ReportedVendors() {
   const navigate = useNavigate();
+  const [reports, setReports] = useState(INITIAL_REPORTS);
+  const [selectedVendor, setSelected] = useState(null);
+  const [showForm, setShowForm] = useState(false);
+  const [formVendorId, setFormVendorId] = useState("");
+  const [formReason, setFormReason] = useState(REASONS[0]);
+  const [formNote, setFormNote] = useState("");
+  const [notifications] = useState([]);
+
+  const reportedVendors = reports
+    .map((r) => ({
+      ...r,
+      vendor: vendors.find((v) => v.id === r.vendorId),
+    }))
+    .filter((r) => r.vendor);
+
+  const submitReport = () => {
+    if (!formVendorId) return;
+    const newReport = {
+      id: Date.now(),
+      vendorId: parseInt(formVendorId),
+      reason: formReason,
+      note: formNote,
+      date: new Date().toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      }),
+    };
+    setReports((p) => [newReport, ...p]);
+    setFormVendorId("");
+    setFormReason(REASONS[0]);
+    setFormNote("");
+    setShowForm(false);
+  };
+
+  const removeReport = (id) => setReports((p) => p.filter((r) => r.id !== id));
 
   return (
-    <div className={styles.pageContainer}>
-      <div className={styles.pageHeader}>
-        <button
-          className={styles.backBtn}
-          onClick={() => navigate("/dashboard")}
-        >
-          <ArrowLeft size={20} />
-          Back to Dashboard
-        </button>
-        <h1>Reported Vendors</h1>
-        <p className={styles.pageSubtitle}>
-          Vendors you've reported to the community
-        </p>
-      </div>
+    <div className="rv-page">
+      <Navbar
+        notifications={notifications}
+        onSearchClick={() => {}}
+        markAsRead={() => {}}
+      />
 
-      <div className={styles.reportsList}>
-        {reportedVendors.map((report) => (
-          <div key={report.id} className={styles.reportCard}>
-            <div className={styles.reportHeader}>
-              <div className={styles.reportTitle}>
-                <Flag size={18} color="#ef4444" />
-                <div>
-                  <h3>{report.name}</h3>
-                  <p className={styles.vendorNumber}>{report.number}</p>
+      <main className="rv-main">
+        <div className="rv-header">
+         
+          
+          <div style={{ flex: 1 }}>
+            <h1 className="rv-title">
+              <Flag size={22} /> Reported Vendors
+            </h1>
+            <p className="rv-sub">
+              {reports.length} report{reports.length !== 1 ? "s" : ""} submitted
+            </p>
+          </div>
+          <button className="rv-btn-new" onClick={() => setShowForm(true)}>
+             New Report
+          </button>
+        </div>
+
+        {reportedVendors.length === 0 ? (
+          <div className="rv-empty">
+            <div className="rv-empty-icon"></div>
+            <h3>No reports submitted</h3>
+            <p>
+              If a vendor scammed or deceived you, report them to protect
+              others.
+            </p>
+            <button onClick={() => setShowForm(true)}>Report a Vendor →</button>
+          </div>
+        ) : (
+          <div className="rv-list">
+            {reportedVendors.map(({ id, vendor, reason, note, date }) => (
+              <div key={id} className="rv-card">
+                <div
+                  className="rv-card-strip"
+                  style={{ background: "#DC2626" }}
+                />
+                <div
+                  className="rv-card-av"
+                  style={{ background: vendor.color }}
+                >
+                  {vendor.name[0]}
+                </div>
+                <div className="rv-card-body">
+                  <p className="rv-vendor-name">{vendor.name}</p>
+                  <p className="rv-meta">
+                    <MapPin size={10} /> {vendor.city} · {vendor.category}
+                  </p>
+                  <span className="rv-reason-tag">{reason}</span>
+                  {note && <p className="rv-note">"{note}"</p>}
+                  <p className="rv-date">Reported on {date}</p>
+                </div>
+                <div className="rv-card-actions">
+                  <button
+                    className="rv-btn-view"
+                    onClick={() => setSelected(vendor)}
+                  >
+                    View Profile
+                  </button>
+                  <button
+                    className="rv-btn-remove"
+                    onClick={() => removeReport(id)}
+                    title="Remove report"
+                  >
+                    <Trash2 size={14} />
+                  </button>
                 </div>
               </div>
-              <span
-                className={`${styles.reportStatus} ${styles[report.status]}`}
+            ))}
+          </div>
+        )}
+      </main>
+
+      {/* NEW REPORT FORM */}
+      {showForm && (
+        <div className="rv-overlay" onClick={() => setShowForm(false)}>
+          <div className="rv-modal" onClick={(e) => e.stopPropagation()}>
+            <h3 className="rv-modal-title"> Report a Vendor</h3>
+            <p className="rv-modal-sub">
+              Select the vendor and reason. Your report helps protect the
+              community.
+            </p>
+
+            <label className="rv-label">Vendor</label>
+            <select
+              className="rv-select"
+              value={formVendorId}
+              onChange={(e) => setFormVendorId(e.target.value)}
+            >
+              <option value="">— Select vendor —</option>
+              {vendors.map((v) => (
+                <option key={v.id} value={v.id}>
+                  {v.name} · {v.city}
+                </option>
+              ))}
+            </select>
+
+            <label className="rv-label">Reason</label>
+            <div className="rv-reasons">
+              {REASONS.map((r) => (
+                <button
+                  key={r}
+                  className={`rv-reason-btn${formReason === r ? " active" : ""}`}
+                  onClick={() => setFormReason(r)}
+                >
+                  {r}
+                </button>
+              ))}
+            </div>
+
+            <label className="rv-label">Additional details (optional)</label>
+            <textarea
+              className="rv-textarea"
+              placeholder="Describe what happened..."
+              rows={3}
+              value={formNote}
+              onChange={(e) => setFormNote(e.target.value)}
+            />
+
+            <div className="rv-modal-btns">
+              <button className="rv-cancel" onClick={() => setShowForm(false)}>
+                Cancel
+              </button>
+              <button
+                className="rv-submit"
+                onClick={submitReport}
+                disabled={!formVendorId}
               >
-                {getStatusIcon(report.status)}
-                {report.statusText}
-              </span>
-            </div>
-
-            <div className={styles.reportDetails}>
-              <p className={styles.reportReason}>
-                <strong>Reason:</strong> {report.reason}
-              </p>
-              <p className={styles.reportMeta}>
-                Reported by {report.reportedBy} on {report.date}
-              </p>
-            </div>
-
-            <div className={styles.reportActions}>
-              <button className={styles.viewDetailsBtn}>View Details</button>
-              <button className={styles.contactSupportBtn}>
-                Contact Support
+                Submit Report
               </button>
             </div>
           </div>
-        ))}
-      </div>
+        </div>
+      )}
+
+      {selectedVendor && (
+        <VendorPreview
+          vendor={selectedVendor}
+          onClose={() => setSelected(null)}
+        />
+      )}
     </div>
   );
-};
-
-export default ReportedVendors;
+}

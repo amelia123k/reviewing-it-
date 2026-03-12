@@ -1,239 +1,261 @@
-import React, { useState } from "react";
-import {
-  X,
-  Phone,
-  MapPin,
-  Shield,
-  MessageSquare,
-  ThumbsUp,
-  ThumbsDown,
-} from "lucide-react";
-import styles from "./VendorPreview.module.css";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { Bookmark, Flag, ChevronDown, ChevronUp } from 'lucide-react';
+import styles from './VendorPreview.module.css';
 
-// ── Rating bar
 const RatingBar = ({ count, total, stars }) => {
   const pct = total > 0 ? Math.round((count / total) * 100) : 0;
   return (
-    <div className={styles.ratingBarRow}>
-      <span className={styles.ratingBarLabel}>{stars}★</span>
-      <div className={styles.ratingBarTrack}>
-        <div className={styles.ratingBarFill} style={{ width: `${pct}%` }} />
+    <div className={styles['vpr-bar-row']}>
+      <span className={styles['vpr-bar-lbl']}>{stars}★</span>
+      <div className={styles['vpr-bar-track']}>
+        <div className={styles['vpr-bar-fill']} style={{ width:`${pct}%` }} />
       </div>
-      <span className={styles.ratingBarCount}>{count}</span>
+      <span className={styles['vpr-bar-cnt']}>{count}</span>
     </div>
   );
 };
 
-// ── Vendor Modal
-const VendorPreview = ({ vendor, onClose }) => {
-  const [selectedStars, setSelectedStars] = useState(0);
-  const [reviewText, setReviewText] = useState("");
-  const [tab, setTab] = useState("reviews");
-  const [localReviews, setLocalReviews] = useState(vendor?.reviews || []);
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = () => {
-    if (!selectedStars) return;
-    const newReview = {
-      stars: selectedStars,
-      text: reviewText || "No comment.",
-      date: new Date().toLocaleDateString("en-GB", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      }),
-      author: "You",
-    };
-    setLocalReviews([newReview, ...localReviews]);
-    setSelectedStars(0);
-    setReviewText("");
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      setTab("reviews");
-    }, 1200);
-  };
+export default function VendorPreview({ vendor, onClose, initialTab = 'reviews' }) {
+  const navigate = useNavigate();
+  const { user, saveReturnTo, addReview } = useAuth();
 
   if (!vendor) return null;
 
-  const dist = [5, 4, 3, 2, 1].map((s) => ({
+  const [tab,           setTab]          = useState(initialTab);
+  const [selectedStars, setSelectedStars]= useState(0);
+  const [reviewText,    setReviewText]   = useState('');
+  const [localReviews,  setLocalReviews] = useState(vendor.reviews);
+  const [submitted,     setSubmitted]    = useState(false);
+  const [saved,         setSaved]        = useState(false);
+  const [reported,      setReported]     = useState(false);
+  const [showDetails,   setShowDetails]  = useState(false);
+
+  const dist = [5,4,3,2,1].map(s => ({
     stars: s,
-    count: localReviews.filter((r) => r.stars === s).length,
+    count: localReviews.filter(r => r.stars === s).length,
   }));
 
-  const trustScore =
-    vendor.rating >= 4.5
-      ? { label: "Highly Trusted", icon: "🛡️", color: "#166534" }
-      : vendor.rating >= 3.5
-        ? { label: "Generally Safe", icon: "✅", color: "#854D0E" }
-        : { label: "Use Caution", icon: "⚠️", color: "#991B1B" };
+  const trust =
+    vendor.rating >= 4.5 ? { label:'Highly Trusted', icon:'🛡️', color:'#166534' } :
+    vendor.rating >= 3.5 ? { label:'Generally Safe', icon:'✅', color:'#854D0E' } :
+{ label:'Use Caution',    icon:'⚠️', color:'#991B1B' };
+
+  const handleSubmit = () => {
+    if (!selectedStars) return;
+
+    const newReview = {
+      id:          Date.now(),
+      vendorId:    vendor.id,
+      vendorName:  vendor.name,
+      vendorColor: vendor.color,
+      stars:       selectedStars,
+      text:        reviewText.trim() || 'No comment.',
+      date:        new Date().toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }),
+      author:      user?.name || 'Anonymous',
+    };
+
+    // Update local display in this modal
+    setLocalReviews(prev => [newReview, ...prev]);
+
+    // ← Save to global AuthContext so MyReviews page sees it
+    addReview(newReview);
+
+    setSelectedStars(0);
+    setReviewText('');
+    setSubmitted(true);
+    setTimeout(() => { setSubmitted(false); setTab('reviews'); }, 1200);
+  };
+
+  const handleWriteTabClick = () => {
+    if (!user) {
+      saveReturnTo({ path: `/dashboard?vendor=${vendor.id}&write=1` });
+      navigate('/login');
+    } else {
+      setTab('write');
+    }
+  };
+
+  const handleSave = () => {
+    if (!user) { saveReturnTo({ path: `/dashboard?vendor=${vendor.id}` }); navigate('/login'); return; }
+    setSaved(s => !s);
+  };
+
+  const handleReport = () => {
+    if (!user) { saveReturnTo({ path: `/dashboard?vendor=${vendor.id}` }); navigate('/login'); return; }
+    setReported(s => !s);
+  };
 
   return (
-    <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
-        {/* Top bar */}
-        <div className={styles.modalTopBar}>
-          <div className={styles.modalPill} />
-          <button className={styles.modalCloseBtn} onClick={onClose}>
-            <X size={16} />
-          </button>
+    <div className={styles['vpr-overlay']} onClick={onClose}>
+      <div className={styles['vpr-modal']} onClick={e => e.stopPropagation()}>
+
+        {/* TOP BAR */}
+        <div className={styles['vpr-topbar']}>
+          <div className={styles['vpr-pill']} />
+          <button className={styles['vpr-closebtn']} onClick={onClose}>✕</button>
         </div>
 
-        {/* Vendor identity */}
-        <div className={styles.vendorIdentity}>
-          <div
-            className={styles.vendorBigAvatar}
-            style={{ background: vendor.color }}
-          >
-            {vendor.name[0]}
-          </div>
-          <div className={styles.vendorIdentityInfo}>
-            <h2 className={styles.vendorIdentityName}>{vendor.name}</h2>
-            <div className={styles.vendorIdentityMeta}>
-              <span className={styles.vendorMetaChip}>
-                <MapPin size={11} /> {vendor.city}
-              </span>
-              <span className={styles.vendorMetaChip}>{vendor.category}</span>
+        {/* VENDOR IDENTITY */}
+        <div className={styles['vpr-identity']}>
+          <div className={styles['vpr-avatar']} style={{ background: vendor.color }}>{vendor.name[0]}</div>
+          <div className={styles['vpr-iinfo']}>
+            <h2 className={styles['vpr-iname']}>{vendor.name}</h2>
+            <div className={styles['vpr-chips']}>
+              <span className={styles['vpr-chip']}>📍 {vendor.city}</span>
+              <span className={styles['vpr-chip']}>{vendor.category}</span>
             </div>
-            <div className={styles.vendorPhoneRow}>
-              <Phone size={13} color="#3A7D44" />
-              <span>{vendor.number}</span>
+            <div className={styles['vpr-quick-actions']}>
+              <button
+                className={`${styles['vpr-qa-btn']}${saved ? ' '+styles['saved'] : ''}`}
+                onClick={handleSave}
+              >
+                <Bookmark size={13} fill={saved ? 'currentColor' : 'none'} />
+                {saved ? 'Saved' : 'Save'}
+              </button>
+              <button
+                className={`${styles['vpr-qa-btn']} ${styles['vpr-qa-report']}${reported ? ' '+styles['reported'] : ''}`}
+                onClick={handleReport}
+              >
+                <Flag size={13} fill={reported ? 'currentColor' : 'none'} />
+                {reported ? 'Reported' : 'Report'}
+              </button>
             </div>
           </div>
         </div>
 
-        {/* Score row */}
-        <div className={styles.scoreRow}>
-          <div className={styles.scoreBig}>
-            <span className={styles.scoreNum}>{vendor.rating}</span>
-            <span className={styles.scoreOutOf}>/5</span>
-          </div>
-          <div className={styles.scoreBars}>
-            {dist.map((d) => (
-              <RatingBar
-                key={d.stars}
-                stars={d.stars}
-                count={d.count}
-                total={localReviews.length}
-              />
-            ))}
-          </div>
-          <div
-            className={styles.trustBadge}
-            style={{ borderColor: trustScore.color }}
-          >
-            <span className={styles.trustIcon}>{trustScore.icon}</span>
-            <span
-              className={styles.trustLabel}
-              style={{ color: trustScore.color }}
-            >
-              {trustScore.label}
-            </span>
-          </div>
-        </div>
+        {/* VIEW DETAILS TOGGLE */}
+        <button className={styles['vpr-details-toggle']} onClick={() => setShowDetails(d => !d)}>
+          {showDetails ? <ChevronUp size={15}/> : <ChevronDown size={15}/>}
+          {showDetails ? 'Hide details' : 'View details'}
+        </button>
 
-        {/* Tab switcher */}
-        <div className={styles.tabRow}>
-          <button
-            className={`${styles.tabBtn} ${tab === "reviews" ? styles.tabBtnActive : ""}`}
-            onClick={() => setTab("reviews")}
-          >
-            <MessageSquare size={14} /> What people say ({localReviews.length})
-          </button>
-          <button
-            className={`${styles.tabBtn} ${tab === "write" ? styles.tabBtnActive : ""}`}
-            onClick={() => setTab("write")}
-          >
-            ✍️ Rate this vendor
-          </button>
-        </div>
-
-        {/* Reviews tab */}
-        {tab === "reviews" && (
-          <div className={styles.reviewsFeed}>
-            {localReviews.length === 0 ? (
-              <p className={styles.noReviews}>No reviews yet. Be the first!</p>
-            ) : (
-              localReviews.map((r, i) => (
-                <div key={i} className={styles.reviewBubble}>
-                  <div className={styles.bubbleTop}>
-                    <div className={styles.bubbleAuthorAvatar}>
-                      {r.author[0]}
-                    </div>
-                    <div>
-                      <div className={styles.bubbleAuthor}>{r.author}</div>
-                      <div className={styles.bubbleDate}>{r.date}</div>
-                    </div>
-                    <div className={styles.bubbleStars}>
-                      {"★".repeat(r.stars)}
-                      {"☆".repeat(5 - r.stars)}
-                    </div>
-                  </div>
-                  <p className={styles.bubbleText}>{r.text}</p>
-                  <div className={styles.bubbleActions}>
-                    <button className={styles.bubbleAction}>
-                      <ThumbsUp size={12} /> Helpful
-                    </button>
-                    <button className={styles.bubbleAction}>
-                      <ThumbsDown size={12} /> Not helpful
-                    </button>
-                  </div>
-                </div>
-              ))
-            )}
+        {showDetails && (
+          <div className={styles['vpr-details']}>
+            <div className={styles['vpr-detail-row']}>
+              <span className={styles['vpr-detail-label']}>📞 Phone</span>
+              <span className={styles['vpr-detail-value']}>{vendor.number}</span>
+            </div>
+            <div className={styles['vpr-detail-row']}>
+              <span className={styles['vpr-detail-label']}>📍 City</span>
+              <span className={styles['vpr-detail-value']}>{vendor.city}</span>
+            </div>
+            <div className={styles['vpr-detail-row']}>
+              <span className={styles['vpr-detail-label']}>🏷️ Category</span>
+              <span className={styles['vpr-detail-value']}>{vendor.category}</span>
+            </div>
           </div>
         )}
 
-        {/* Write review tab */}
-        {tab === "write" && (
-          <div className={styles.writeTab}>
-            <p className={styles.writePrompt}>
-              How was your experience with <strong>{vendor.name}</strong>?
-            </p>
+        {/* SCORE ROW */}
+        <div className={styles['vpr-scorerow']}>
+          <div className={styles['vpr-scorebig']}>
+            <span className={styles['vpr-scorenum']}>{vendor.rating}</span>
+            <span className={styles['vpr-scoreof']}>/5</span>
+          </div>
+          <div className={styles['vpr-bars']}>
+            {dist.map(d => (
+              <RatingBar key={d.stars} stars={d.stars} count={d.count} total={localReviews.length} />
+            ))}
+          </div>
+          <div className={styles['vpr-trust']} style={{ borderColor: trust.color }}>
+            <span className={styles['vpr-ticon']}>{trust.icon}</span>
+            <span className={styles['vpr-tlabel']} style={{ color: trust.color }}>{trust.label}</span>
+          </div>
+        </div>
 
-            <div className={styles.emojiRating}>
+        {/* TABS */}
+        <div className={styles['vpr-tabs']}>
+          <button
+            className={`${styles['vpr-tab']}${tab==='reviews' ? ' '+styles['active'] : ''}`}
+            onClick={() => setTab('reviews')}
+          >
+            What people say ({localReviews.length})
+          </button>
+          <button
+            className={`${styles['vpr-tab']}${tab==='write' ? ' '+styles['active'] : ''}`}
+            onClick={handleWriteTabClick}
+          >
+            write a review and  rate this vendor
+          </button>
+        </div>
+
+        {/* REVIEWS TAB */}
+        {tab === 'reviews' && (
+          <div className={styles['vpr-feed']}>
+            {localReviews.length === 0
+              ? <p className={styles['vpr-empty']}>No reviews yet. Be the first!</p>
+              : localReviews.map((r, i) => (
+                <div key={i} className={styles['vpr-bubble']}>
+                  <div className={styles['vpr-btop']}>
+                    <div className={styles['vpr-bav']}>{r.author[0]}</div>
+                    <div>
+                      <p className={styles['vpr-bauthor']}>{r.author}</p>
+                      <p className={styles['vpr-bdate']}>{r.date}</p>
+                    </div>
+                    <div className={styles['vpr-bstars']}>{'★'.repeat(r.stars)}{'☆'.repeat(5-r.stars)}</div>
+                  </div>
+                  <p className={styles['vpr-btxt']}>{r.text}</p>
+                  <div className={styles['vpr-bactions']}>
+                    <button className={styles['vpr-baction']}>👍 Helpful</button>
+                    <button className={styles['vpr-baction']}>👎 Not helpful</button>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        )}
+
+        {/* WRITE TAB */}
+        {tab === 'write' && user && (
+          <div className={styles['vpr-write']}>
+            <div className={styles['vpr-posting-as']}>
+              <div className={styles['vpr-pa-av']}>{user.name[0]}</div>
+              <div>
+                <p className={styles['vpr-pa-name']}>Posting as <strong>{user.name}</strong></p>
+                <p className={styles['vpr-pa-email']}>{user.email}</p>
+              </div>
+            </div>
+            <p className={styles['vpr-wprompt']}>How was your experience with <strong>{vendor.name}</strong>?</p>
+            <div className={styles['vpr-emoji']}>
               {[
-                { stars: 1, emoji: "😡", label: "Terrible" },
-                { stars: 2, emoji: "😕", label: "Bad" },
-                { stars: 3, emoji: "😐", label: "Okay" },
-                { stars: 4, emoji: "😊", label: "Good" },
-                { stars: 5, emoji: "🤩", label: "Amazing" },
-              ].map((opt) => (
+                { stars:1, emoji:'😡', label:'Terrible' },
+                { stars:2, emoji:'😕', label:'Bad'      },
+                { stars:3, emoji:'😐', label:'Okay'     },
+                { stars:4, emoji:'😊', label:'Good'     },
+                { stars:5, emoji:'🤩', label:'Amazing'  },
+              ].map(opt => (
                 <button
                   key={opt.stars}
-                  className={`${styles.emojiBtn} ${selectedStars === opt.stars ? styles.emojiBtnActive : ""}`}
+                  className={`${styles['vpr-emojibtn']}${selectedStars===opt.stars?' '+styles['active']:''}`}
                   onClick={() => setSelectedStars(opt.stars)}
                 >
-                  <span className={styles.emojiIcon}>{opt.emoji}</span>
-                  <span className={styles.emojiLabel}>{opt.label}</span>
+                  <span className={styles['vpr-eicon']}>{opt.emoji}</span>
+                  <span className={styles['vpr-elabel']}>{opt.label}</span>
                 </button>
               ))}
             </div>
-
             <textarea
-              className={styles.writeInput}
+              className={styles['vpr-winput']}
               placeholder="Tell others what you experienced — delivery, quality, communication..."
               value={reviewText}
-              onChange={(e) => setReviewText(e.target.value)}
+              onChange={e => setReviewText(e.target.value)}
               rows={4}
             />
-
             <button
-              className={styles.submitReviewBtn}
+              className={styles['vpr-wsubmit']}
               onClick={handleSubmit}
               disabled={!selectedStars}
               style={{ opacity: selectedStars ? 1 : 0.5 }}
             >
-              <Shield size={15} /> {submitted ? "✅ Posted!" : "Post Review"}
+              🛡️ {submitted ? '✅ Posted!' : 'Post Review'}
             </button>
-            <p className={styles.writeDisclaimer}>
-              Your review helps protect others in the community.
-            </p>
+            <p className={styles['vpr-wdisclaimer']}>Your review helps protect others in the community.</p>
           </div>
         )}
+
       </div>
     </div>
   );
-};
-
-export default VendorPreview;
+}

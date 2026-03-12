@@ -9,13 +9,13 @@ const steps = [
   },
   {
     n: "2",
-    icon: "⭐",
+    icon: "",
     title: "Read the reviews",
     desc: "See honest ratings and comments from real people who've bought from them.",
   },
   {
     n: "3",
-    icon: "✍️",
+    icon: "",
     title: "Leave your review",
     desc: "Bought from someone? Write a quick review and help the next buyer.",
   },

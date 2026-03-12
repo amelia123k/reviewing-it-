@@ -35,12 +35,12 @@ const RolePicker = ({ onClose }) => {
               className={styles.rpCardIcon}
               style={{ background: "#F0FDF4" }}
             >
-              🛍️
+              
             </div>
             <div className={styles.rpCardText}>
               <p className={styles.rpCardTitle}>I'm a Buyer</p>
               <p className={styles.rpCardDesc}>
-                Search vendors, read reviews and stay safe while shopping
+                Search vendors, read reviews and stay safe while buying online
               </p>
             </div>
             <span className={styles.rpArrow}>→</span>
@@ -51,7 +51,7 @@ const RolePicker = ({ onClose }) => {
               className={styles.rpCardIcon}
               style={{ background: "#FFF7ED" }}
             >
-              🏪
+              
             </div>
             <div className={styles.rpCardText}>
               <p className={styles.rpCardTitle}>I'm a Vendor</p>
@@ -63,7 +63,7 @@ const RolePicker = ({ onClose }) => {
           </div>
         </div>
 
-        <p className={styles.rpNote}>It's completely free to get started 🎉</p>
+        <p className={styles.rpNote}>It's completely free to get started </p>
       </div>
     </div>
   );
@@ -77,12 +77,12 @@ const Navbar = () => {
     <>
       <nav className={styles.nav}>
         {/* LOGO — shows your image with SafeBuy text beside it */}
-        <a className={styles.logo} href="#">
+        <button className={styles.logo} onClick={() => navigate('/')}>
           <img src={logo} alt="SafeBuy" className={styles.logoImg} />
           <span className={styles.logoText}>
             Safe<span>Buy</span>
           </span>
-        </a>
+        </button>
 
         <div className={styles.navLinks}>
           <a href="#how-it-works">How It Works</a>

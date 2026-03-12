@@ -19,7 +19,7 @@ const TopBar = ({ setSidebarOpen }) => {
         <Menu size={24} />
       </button>
       <div className={styles.greeting}>
-        <h1>{getGreeting()}, <span>{displayName}</span> 👋</h1>
+        <h1>{getGreeting()}, <span>{displayName}</span> </h1>
         <p>What vendor are you checking today?</p>
       </div>
     </header>

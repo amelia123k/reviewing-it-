@@ -1,65 +1,109 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styles from "./Hero.module.css";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Search } from 'lucide-react';
+import styles from './Hero.module.css';
 
 const proofAvatars = [
-  { color: "#3A7D44", letter: "A" },
-  { color: "#C8861A", letter: "G" },
-  { color: "#6366F1", letter: "B" },
-  { color: "#E87A5A", letter: "N" },
+  { color: '#3A7D44', letter: 'A' },
+  { color: '#C8861A', letter: 'G' },
+  { color: '#6366F1', letter: 'B' },
+  { color: '#E87A5A', letter: 'N' },
 ];
 
-const Hero = ({ onSearch }) => {
+// Cameroon phone number validation
+const isValidCameroonNumber = (number) => {
+  // remove spaces, brackets, dashes
+  const cleaned = number.replace(/[\s\-()]/g, '');
+
+  const patterns = [
+    /^6\d{8}$/,        // 683893731
+    /^2\d{8}$/,        // landline example
+    /^\+2376\d{8}$/,   // +237683893731
+    /^\+2372\d{8}$/,   // +2372XXXXXXXX
+    /^2376\d{8}$/,     // 237683893731
+    /^2372\d{8}$/      // 2372XXXXXXXX
+  ];
+
+  return patterns.some(pattern => pattern.test(cleaned));
+};
+
+const Hero = () => {
   const navigate = useNavigate();
-  const [number, setNumber] = useState("");
+  const [number, setNumber] = useState('');
+  const [error, setError] = useState('');
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // Search Free → send to user login
-    navigate("/login");
+    const q = number.trim();
+
+    setError('');
+
+    if (!q) {
+      setError('Please enter a phone number');
+      return;
+    }
+
+    if (!isValidCameroonNumber(q)) {
+      setError('Enter a valid Cameroon number e.g. 683893731 or +237683893731');
+      return;
+    }
+
+    navigate(`/dashboard?q=${encodeURIComponent(q)}`);
   };
 
   return (
     <section className={styles.hero}>
       <div className={styles.heroInner}>
-        <div className={styles.heroTag}>🌍 Built for Cameroon</div>
+        <div className={styles.heroTag}> Built for Cameroon</div>
 
         <h1 className={styles.heroH1}>
-          Know who to trust
-          <br />
-          before you <em>pay.</em>
+          Know who to trust<br />before you <em>pay.</em>
         </h1>
 
         <p className={styles.heroP}>
-          WhatsApp vendors are everywhere. But are they reliable? Search any
-          vendor number right now — no account needed.
+          WhatsApp vendors are everywhere. But are they reliable?
+          Search any vendor number right now 
         </p>
 
-        {/* Search Free → /login (user) */}
         <form className={styles.heroSearch} onSubmit={handleSearch}>
           <div className={styles.searchInputWrap}>
-            <span className={styles.searchIcon}>📱</span>
+            <Search className={styles.searchIcon} size={18} />
             <input
               type="text"
               placeholder="Enter vendor phone number..."
               value={number}
-              onChange={(e) => setNumber(e.target.value)}
+              onChange={(e) => {
+                setNumber(e.target.value);
+                setError('');
+              }}
               className={styles.searchInput}
             />
           </div>
+
           <button type="submit" className={styles.searchBtn}>
-            Search Free →
+            Search 
           </button>
         </form>
 
+        {error && (
+          <div className={styles.errorMessage}>
+            {error}
+          </div>
+        )}
+
         <div className={styles.heroBtns}>
-          {/* Review a Vendor → user login */}
-          <button className={styles.btnMain} onClick={() => navigate("/login")}>
-            ⭐ Review a Vendor
+          <button
+            className={styles.btnMain}
+            onClick={() => navigate('/dashboard')}
+          >
+             Browse Vendors
           </button>
-          {/* Add a Vendor → business login */}
-          <button className={styles.btnSec} onClick={() => navigate("/signup")}>
-            ➕ Add a Vendor
+
+          <button
+            className={styles.btnSec}
+            onClick={() => navigate('/signup')}
+          >
+            List Your Business
           </button>
         </div>
 
@@ -75,8 +119,9 @@ const Hero = ({ onSearch }) => {
               </div>
             ))}
           </div>
+
           <span className={styles.proofTxt}>
-            <strong>1,200+ vendors</strong> reviewed by real buyers
+            <strong>20+ vendors</strong> reviewed by real buyers
           </span>
         </div>
       </div>

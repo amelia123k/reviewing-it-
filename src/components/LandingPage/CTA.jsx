@@ -17,7 +17,7 @@ const CTA = () => {
         <div className={styles.ctaBtns}>
           {/* User → /login  |  Vendor → /signup */}
           <button className={styles.btnMain} onClick={() => navigate("/login")}>
-            Search a Vendor →
+            Search a Vendor 
           </button>
           <button className={styles.btnSec} onClick={() => navigate("/signup")}>
             Add Your Business

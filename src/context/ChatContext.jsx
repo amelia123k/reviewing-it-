@@ -76,7 +76,7 @@ const initialChats = [
     messages: [
       {
         sender: "vendor",
-        text: "Hi! Your skincare package is ready for pickup 💚",
+        text: "Hi! Your skincare package is ready for pickup ",
         time: "9:00 AM",
       },
       {
@@ -86,7 +86,7 @@ const initialChats = [
       },
       {
         sender: "vendor",
-        text: "Perfect, we are open until 7pm 🌿",
+        text: "Perfect, we are open until 7pm ",
         time: "9:06 AM",
       },
     ],

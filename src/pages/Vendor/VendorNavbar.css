@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --sage:    #2D6A35;
+  --sage-l:  #3A7D44;
+  --sage-bg: #F2FAF4;
+  --dark:    #0D1F12;
+  --muted:   #7A9A7D;
+  --border:  #DCE9DC;
+  --white:   #FFFFFF;
+  --red:     #E05252;
+}
+
+/* ── TOP NAVBAR ── */
+.vsb-nav {
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  background: #fff;
+  border-bottom: 1.5px solid var(--border);
+  box-shadow: 0 2px 12px rgba(45,106,53,0.07);
+}
+
+.vsb-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+  height: 60px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+/* LOGO */
+.vsb-logo { 
+  display: flex; align-items: center; gap: 8px; 
+  text-decoration: none; flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+.vsb-logoimg { width: 28px; height: 28px; object-fit: contain; border-radius: 7px; }
+.vsb-brand { font-family: 'Lora', serif; font-size: 17px; font-weight: 700; color: var(--dark); }
+.vsb-brand b { color: var(--sage); }
+
+/* CENTER NAV LINKS */
+.vsb-links { display: flex; align-items: center; gap: 2px; flex: 1; justify-content: center; }
+.vsb-link {
+  display: flex; align-items: center; gap: 6px;
+  background: none; border: none;
+  font-size: 13px; font-weight: 600; color: var(--muted);
+  padding: 7px 14px; border-radius: 8px; cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.15s; white-space: nowrap;
+}
+.vsb-link:hover  { background: var(--sage-bg); color: var(--dark); }
+.vsb-link.active { color: var(--sage); background: var(--sage-bg); border-bottom: 2px solid var(--sage); }
+
+.vsb-badge {
+  background: var(--red); color: #fff;
+  font-size: 9px; font-weight: 800;
+  min-width: 16px; height: 16px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; padding: 0 4px;
+}
+
+/* RIGHT */
+.vsb-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+.vsb-icon-wrap { position: relative; }
+.vsb-icon-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: none; background: var(--sage-bg); color: var(--muted);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; position: relative; transition: all 0.15s;
+}
+.vsb-icon-btn:hover { background: #E8F5EA; color: var(--sage); }
+
+.vsb-notif-badge {
+  position: absolute; top: -3px; right: -3px;
+  width: 17px; height: 17px; background: var(--red); color: #fff;
+  font-size: 9px; font-weight: 800; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid #fff;
+}
+
+/* DROPDOWN */
+.vsb-dropdown {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  background: #fff; border: 1.5px solid var(--border);
+  border-radius: 14px; box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  z-index: 1000; overflow: hidden; width: 310px;
+  animation: vsbDrop 0.15s ease;
+}
+@keyframes vsbDrop { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:translateY(0); } }
+
+.vsb-dd-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; border-bottom: 1px solid var(--border);
+  font-size: 13px; font-weight: 700; color: var(--dark); font-family: 'Inter', sans-serif;
+}
+.vsb-mark-all { background: none; border: none; font-size: 11px; color: var(--sage); font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; }
+.vsb-mark-all:hover { text-decoration: underline; }
+.vsb-dd-close { background: none; border: none; cursor: pointer; color: var(--muted); display:flex; align-items:center; }
+
+.vsb-notif-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 11px 16px; cursor: pointer; transition: background 0.15s;
+  border-bottom: 1px solid rgba(45,106,53,0.07);
+}
+.vsb-notif-item:hover  { background: #F8FDF9; }
+.vsb-notif-item.unread { background: var(--sage-bg); }
+.vsb-dot   { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.vsb-ntxt  { font-size: 12px; color: var(--dark); font-weight: 500; line-height: 1.4; font-family: 'Inter', sans-serif; }
+.vsb-ntime { font-size: 10.5px; color: #9EB5A4; margin-top: 2px; font-family: 'Inter', sans-serif; }
+
+/* VENDOR INFO */
+.vsb-vendor { display: flex; align-items: center; gap: 8px; }
+.vsb-av {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--sage); color: #fff;
+  font-size: 13px; font-weight: 800; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Inter', sans-serif;
+}
+.vsb-vname { font-size: 12.5px; font-weight: 700; color: var(--dark); font-family: 'Inter', sans-serif; max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.vsb-back-btn {
+  background: none; border: 1.5px solid var(--border);
+  color: var(--sage); font-size: 12px; font-weight: 700;
+  padding: 6px 14px; border-radius: 8px; cursor: pointer;
+  font-family: 'Inter', sans-serif; white-space: nowrap; transition: all 0.15s;
+}
+.vsb-back-btn:hover { background: var(--sage-bg); border-color: var(--sage); }
+
+.vsb-hamburger { display: none; background: none; border: none; color: var(--sage); cursor: pointer; padding: 4px; }
+
+/* MOBILE MENU */
+.vsb-mobile-menu {
+  display: flex; flex-direction: column;
+  background: #fff; border-top: 1px solid var(--border); padding: 8px 0;
+}
+.vsb-mobile-link {
+  display: flex; align-items: center; gap: 10px;
+  background: none; border: none; padding: 12px 24px;
+  font-size: 14px; font-weight: 600; color: var(--dark);
+  cursor: pointer; text-align: left; font-family: 'Inter', sans-serif;
+  transition: background 0.15s;
+}
+.vsb-mobile-link:hover  { background: var(--sage-bg); }
+.vsb-mobile-link.active { color: var(--sage); background: var(--sage-bg); }
+.vsb-mobile-divider { height: 1px; background: var(--border); margin: 4px 0; }
+
+@media (max-width: 900px) {
+  .vsb-links    { display: none; }
+  .vsb-vname    { display: none; }
+  .vsb-back-btn { display: none; }
+  .vsb-hamburger { display: flex; }
+}
+@media (max-width: 480px) {
+  .vsb-inner { padding: 0 14px; }
+}
