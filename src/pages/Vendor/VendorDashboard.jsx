@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import './VendorDashboard.css';
-import VendorNavbar       from './vendor/VendorNavbar';
-import VendorOverview     from './vendor/VendorOverview';
-import VendorReviews      from './vendor/VendorReviews';
-import VendorMessagesPage from './vendor/VendorMessagesPage';
-import VendorComplaints   from './vendor/VendorComplaints';
+import { useState } from "react";
+import "./VendorDashboard.css";
+import VendorNavbar from "./VendorNavbar";
+import VendorOverview from "./VendorOverview";
+import VendorReviews from "./VendorReviews";
+import VendorMessagesPage from './VendorMessagesPage';
+import VendorComplaints   from './VendorComplaints';
 
 const NOTIFS = [
   { id:1, text:'Yvonne T. sent you a message',       time:'5 min ago',  read:false, color:'#2D6A35' },
