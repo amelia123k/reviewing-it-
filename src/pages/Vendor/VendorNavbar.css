@@ -117,6 +117,16 @@
 .vsb-ntime { font-size: 10.5px; color: #9EB5A4; margin-top: 2px; font-family: 'Inter', sans-serif; }
 
 /* VENDOR INFO */
+.vsb-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--sage); color: #fff;
+  font-size: 13px; font-weight: 800; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Inter', sans-serif;
+  border: none; cursor: pointer; transition: all 0.15s;
+}
+.vsb-avatar:hover { background: var(--sage-l); }
+
 .vsb-vendor { display: flex; align-items: center; gap: 8px; }
 .vsb-av {
   width: 32px; height: 32px; border-radius: 50%;
@@ -126,6 +136,45 @@
   font-family: 'Inter', sans-serif;
 }
 .vsb-vname { font-size: 12.5px; font-weight: 700; color: var(--dark); font-family: 'Inter', sans-serif; max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* PROFILE DROPDOWN */
+.vsb-profile-dd {
+  width: 240px;
+}
+.vsb-profile-top {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px; border-bottom: 1px solid var(--border);
+}
+.vsb-profile-av {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: var(--sage); color: #fff;
+  font-size: 15px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Inter', sans-serif;
+}
+.vsb-profile-name {
+  font-size: 14px; font-weight: 700; color: var(--dark);
+  font-family: 'Inter', sans-serif; margin: 0;
+}
+.vsb-profile-email {
+  font-size: 12px; color: var(--muted);
+  font-family: 'Inter', sans-serif; margin: 2px 0 0 0;
+}
+.vsb-divider {
+  height: 1px; background: var(--border);
+  margin: 0;
+}
+.vsb-menu-item {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 10px 16px;
+  background: none; border: none;
+  font-size: 13px; font-weight: 600; color: var(--dark);
+  cursor: pointer; font-family: 'Inter', sans-serif;
+  transition: background 0.15s;
+}
+.vsb-menu-item:hover { background: var(--sage-bg); }
+.vsb-menu-item.vsb-logout { color: var(--red); }
+.vsb-menu-item.vsb-logout:hover { background: #FEF5F5; }
 
 .vsb-back-btn {
   background: none; border: 1.5px solid var(--border);
@@ -151,6 +200,8 @@
 }
 .vsb-mobile-link:hover  { background: var(--sage-bg); }
 .vsb-mobile-link.active { color: var(--sage); background: var(--sage-bg); }
+.vsb-mobile-link.vsb-logout { color: var(--red); }
+.vsb-mobile-link.vsb-logout:hover { background: #FEF5F5; }
 .vsb-mobile-divider { height: 1px; background: var(--border); margin: 4px 0; }
 
 @media (max-width: 900px) {

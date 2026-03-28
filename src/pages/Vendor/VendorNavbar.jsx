@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bell, X, Menu } from "lucide-react";
+import { Bell, X, Menu, LogOut, User, Settings } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
 import "./VendorNavbar.css";
 import logo from "../../assets/logo.png";
 
@@ -20,11 +21,19 @@ export default function VendorNavbar({
   onClearAll,
 }) {
   const navigate = useNavigate();
+  const { vendor, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const unread = notifications?.filter((n) => !n.read).length || 0;
   const initial = vendorName?.[0]?.toUpperCase() || "V";
+  const displayName = vendor?.name || vendorName || "Vendor";
+
+  const handleLogout = () => { 
+    logout(); 
+    navigate('/'); 
+  };
 
   return (
     <nav className="vsb-nav">
@@ -60,6 +69,7 @@ export default function VendorNavbar({
               onClick={() => {
                 setNotifOpen((o) => !o);
                 setMobileOpen(false);
+                setMenuOpen(false);
               }}
             >
               <Bell size={18} />
@@ -104,9 +114,35 @@ export default function VendorNavbar({
           </div>
 
           {/* VENDOR AVATAR */}
-          <div className="vsb-vendor">
-            <div className="vsb-av">{initial}</div>
-            <span className="vsb-vname">{vendorName}</span>
+          <div className="vsb-icon-wrap">
+            <button 
+              className="vsb-avatar" 
+              onClick={() => { 
+                setMenuOpen((o) => !o); 
+                setNotifOpen(false); 
+                setMobileOpen(false); 
+              }}
+            >
+              {initial}
+            </button>
+            {menuOpen && (
+              <div className="vsb-dropdown vsb-profile-dd">
+                <div className="vsb-profile-top">
+                  <div className="vsb-profile-av">{initial}</div>
+                  <div>
+                    <p className="vsb-profile-name">{displayName}</p>
+                    <p className="vsb-profile-email">{vendor?.email || ''}</p>
+                  </div>
+                </div>
+                <div className="vsb-divider" />
+                <button className="vsb-menu-item" onClick={() => { setMenuOpen(false); navigate('/vendor-settings'); }}>
+                  <Settings size={14} /> Settings
+                </button>
+                <button className="vsb-menu-item vsb-logout" onClick={handleLogout}>
+                  <LogOut size={14} /> Log out
+                </button>
+              </div>
+            )}
           </div>
 
          
@@ -114,7 +150,11 @@ export default function VendorNavbar({
           {/* MOBILE HAMBURGER */}
           <button
             className="vsb-hamburger"
-            onClick={() => setMobileOpen((o) => !o)}
+            onClick={() => {
+              setMobileOpen((o) => !o);
+              setNotifOpen(false);
+              setMenuOpen(false);
+            }}
           >
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -138,6 +178,9 @@ export default function VendorNavbar({
             </button>
           ))}
           <div className="vsb-mobile-divider" />
+          <button className="vsb-mobile-link vsb-logout" onClick={handleLogout}>
+            <LogOut size={14} /> Log out
+          </button>
          
         </div>
       )}

@@ -1,49 +1,53 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import "./LoginSignUp.css";
+import "../LoginSignUp/LoginSignUp.css";
 
-const LoginSignUp = () => {
-  const [isLogin, setIsLogin]               = useState(true);
-  const [email,   setEmail]                 = useState("");
-  const [password, setPassword]             = useState("");
-  const [name,    setName]                  = useState("");
+const UserLogin = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error,   setError]                 = useState("");
-  const [loading, setLoading]               = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
 
   const navigate = useNavigate();
   const { loginUser, returnTo, clearReturnTo } = useAuth();
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     setError("");
-    if (!email || !password)                          { setError("Please fill in all fields."); return; }
-    if (!isLogin && !name)                            { setError("Please enter your full name."); return; }
-    if (!isLogin && password !== confirmPassword)     { setError("Passwords do not match."); return; }
-    if (!isLogin && password.length < 6)              { setError("Password must be at least 6 characters."); return; }
-
-    setLoading(true);
-    const { error: authError } = await loginUser(
-      isLogin ? email.split("@")[0] : name,
-      email,
-      password,
-      !isLogin,
-    );
-    setLoading(false);
-
-    if (authError) {
-      setError(authError.message || "Authentication failed.");
+    if (!email || !password) {
+      setError("Please fill in all fields.");
+      return;
+    }
+    if (!isLogin && !name) {
+      setError("Please enter your full name.");
+      return;
+    }
+    if (!isLogin && password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+    if (!isLogin && password.length < 6) {
+      setError("Password must be at least 6 characters.");
       return;
     }
 
-    // If the user was trying to do something (e.g. write a review), send them back
-    if (returnTo?.path) {
-      const dest = returnTo.path;
-      clearReturnTo();
-      navigate(dest);
-    } else {
-      navigate("/dashboard");
-    }
+    setLoading(true);
+    setTimeout(() => {
+      loginUser(isLogin ? email.split("@")[0] : name, email);
+      setLoading(false);
+
+      // If user was trying to do something (e.g. write a review), send them back
+      if (returnTo?.path) {
+        const dest = returnTo.path;
+        clearReturnTo();
+        navigate(dest);
+      } else {
+        navigate("/dashboard");
+      }
+    }, 800);
   };
 
   return (
@@ -111,4 +115,4 @@ const LoginSignUp = () => {
   );
 };
 
-export default LoginSignUp;
+export default UserLogin;

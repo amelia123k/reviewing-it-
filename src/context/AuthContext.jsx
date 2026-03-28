@@ -3,14 +3,33 @@ import { createContext, useContext, useState } from 'react';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  // Customer session
   const [user,     setUser]     = useState(null);
+  // Vendor session (business account)
+  const [vendor,   setVendor]   = useState(null);
   const [returnTo, setReturnTo] = useState(null);
   const [myReviews, setMyReviews] = useState([]);
   // myReviews = [{ id, vendorId, vendorName, vendorColor, stars, text, date }]
 
-  const loginUser   = (name, email) => setUser({ name, email, type: 'user' });
-  const loginVendor = (bizName, email) => setUser({ name: bizName, email, type: 'vendor', bizName });
-  const logout      = () => { setUser(null); setMyReviews([]); };
+  const loginUser = (name, email) => {
+    // Switching to a customer account should not keep any previous vendor session.
+    setVendor(null);
+    setMyReviews([]);
+    setUser({ name, email, type: 'user' });
+  };
+
+  const loginVendor = (bizName, email) => {
+    // Switching to a vendor account should not keep any previous customer session.
+    setUser(null);
+    setMyReviews([]);
+    setVendor({ name: bizName, email, type: 'vendor', bizName });
+  };
+
+  const logout = () => {
+    setUser(null);
+    setVendor(null);
+    setMyReviews([]);
+  };
 
   const saveReturnTo  = (info) => setReturnTo(info);
   const clearReturnTo = ()     => setReturnTo(null);
@@ -32,7 +51,11 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{
-      user, loginUser, loginVendor, logout,
+      user,
+      vendor,
+      loginUser,
+      loginVendor,
+      logout,
       returnTo, saveReturnTo, clearReturnTo,
       myReviews, addReview, editReview, deleteReview,
     }}>
